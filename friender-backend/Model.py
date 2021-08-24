@@ -38,7 +38,7 @@ class User(db.Model):
     )
 
     email = db.Column(
-       db.Text,
+        db.Text,
         nullable=False,
         unique=True,
     )
@@ -139,65 +139,65 @@ class User(db.Model):
         return False
 
 
-class Message(db.Model):
-    """An individual message ("warble")."""
+# class Message(db.Model):
+#     """An individual message ("warble")."""
 
-    __tablename__ = 'messages'
+#     __tablename__ = 'messages'
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True,
-    )
+#     id = db.Column(
+#         db.Integer,
+#         primary_key=True,
+#     )
 
-    text = db.Column(
-        db.String(140),
-        nullable=False,
-    )
+#     text = db.Column(
+#         db.String(140),
+#         nullable=False,
+#     )
 
-    timestamp = db.Column(
-        db.DateTime,
-        nullable=False,
-        default=datetime.utcnow(),
-    )
+#     timestamp = db.Column(
+#         db.DateTime,
+#         nullable=False,
+#         default=datetime.utcnow(),
+#     )
 
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey('users.id', ondelete='CASCADE'),
-        nullable=False,
-    )
+#     user_id = db.Column(
+#         db.Integer,
+#         db.ForeignKey('users.id', ondelete='CASCADE'),
+#         nullable=False,
+#     )
 
-    user = db.relationship('User')
-
-
-def connect_db(app):
-    """Connect this database to provided Flask app.
-
-    You should call this in your Flask app.
-    """
-
-    db.app = app
-    db.init_app(app)
+#     user = db.relationship('User')
 
 
-class Like(db.Model):
-    """ Join table between users and messages (the join represents a like)."""
+# def connect_db(app):
+#     """Connect this database to provided Flask app.
 
-    __tablename__ = 'likes'
+#     You should call this in your Flask app.
+#     """
 
-    id = db.Column(
-        db.Integer,
-        primary_key=True
-    )
+#     db.app = app
+#     db.init_app(app)
 
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey('users.id', ondelete='CASCADE'),
-        nullable=False, 
-    )
 
-    message_id = db.Column(
-        db.Integer,
-        db.ForeignKey('messages.id', ondelete='CASCADE'),
-        nullable=False, 
-    )
+# class Like(db.Model):
+#     """ Join table between users and messages (the join represents a like)."""
+
+#     __tablename__ = 'likes'
+
+#     id = db.Column(
+#         db.Integer,
+#         primary_key=True
+#     )
+
+#     user_id = db.Column(
+#         db.Integer,
+#         db.ForeignKey('users.id', ondelete='CASCADE'),
+#         nullable=False, 
+#     )
+
+#     message_id = db.Column(
+#         db.Integer,
+#         db.ForeignKey('messages.id', ondelete='CASCADE'),
+#         nullable=False, 
+#     )
  
