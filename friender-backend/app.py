@@ -1,9 +1,8 @@
 import os
 
-from flask import Flask, render_template, request, session, g, jsonify
+from flask import Flask, json, render_template, request, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-from flask_jwt import JWT, jwt_required, current_identity #used for flask token
 from forms import  UserRegisterForm, LoginForm
 from models import db, connect_db, User
 
@@ -29,7 +28,9 @@ g.user = CURR_USER_KEY
 ##############################################################################
 # User signup/login/logout
 
+#-------- NOTE: REMOVED FOR DEVELOPMENT 
 # @app.before_request
+
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
 
@@ -74,6 +75,7 @@ def signup():
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
+
     # TURNING OFF CSRF? BECASUE REACT -> FLASK react no csrf
     form = UserRegisterForm( formadata=incoming_request,
                         meta={'csrf': False})
@@ -89,8 +91,7 @@ def signup():
             db.session.commit()
 
         except IntegrityError as e:
-            flash("Username already taken", 'danger')
-            return render_template('users/signup.html', form=form)
+            return jsonify(error= e)
 
         do_login(user)
 

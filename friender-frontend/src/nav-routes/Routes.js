@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import SignupForm from "./SignupForm";
 import UserContext from "./UserContext";
+import Homepage from "./Homepage";
 
 function Routes() {
   //private route -> usercontext {props.childre}
@@ -12,13 +13,15 @@ function Routes() {
       {
         <Switch>
           <Route exact path="/signup">
-            <SignupForm/>
+            <SignupForm />
+          </Route>
+
+          <Route exact path="/">
+            <Homepage />
           </Route>
           <Redirect to="/" />
         </Switch>
-      
       }
-
     </div>
   );
 }
