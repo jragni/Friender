@@ -1,3 +1,4 @@
+import "bootswatch/dist/quartz/bootstrap.min.css";
 import "./App.css";
 import Nav from "./nav-routes/Nav";
 import Routes from "./nav-routes/Routes";
@@ -5,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Api from "./api/api";
 import UserContext from "./UserContext";
-import jwt from "jsonwebtoken";
 function App() {
   function login() {}
 

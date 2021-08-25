@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
+import "./Nav.css";
 import { NavLink } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.css";
-import UserContext from "./UserContext";
+import UserContext from "../UserContext";
 
 /** Nav: navbar for each page
  *
@@ -15,16 +15,23 @@ function Nav() {
   return (
     <div className="Navbar">
       {
-        <nav className="Nav navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="Nav navbar navbar-expand-md navbar-dark bg-primary">
           <NavLink exact to="/" className="nav-brand">
-            Friender.. Find hot lonely friends nearby.... they're waiting.
+            <i> Friender </i>
           </NavLink>
-          <NavLink exact to="/login" className="nav-link">
-            Login
-          </NavLink>
-          <NavLink exact to="/signup" className="nav-link">
-            SignUp
-          </NavLink>
+
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item mr-4">
+              <NavLink exact to="/login" className="nav-link">
+                Login
+              </NavLink>
+            </li>
+            <li className="navbar-nav mr-4">
+              <NavLink exact to="/signup" className="nav-link">
+                SignUp
+              </NavLink>
+            </li>
+          </ul>
         </nav>
       }
     </div>
