@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
-import UserContext from "./UserContext";
+import { useHistory } from "react-router-dom";
+import "./SignupForm.css";
+import UserContext from "../UserContext";
 // import { useHistory } from "react-router-dom";
 
 function SignUpForm() {
-  // let history = useHistory()
+  const history = useHistory();
   const { signup } = useContext(UserContext);
   const [signUpInfo, setSignUpInfo] = useState({
     firstName: "",
@@ -22,13 +24,14 @@ function SignUpForm() {
   // Sends search back to parent component
   function handleSubmit(evt) {
     evt.preventDefault();
-    signup(signUpInfo);
+    //signup(signUpInfo); // TODO: will add this later
     // if(currentUser) history.push("/companies")
+    history.push("/");
   }
 
   return (
-    <div className="SignUpForm" style={{ padding: "8px" }}>
-      <form className="Sign-up-page" onSubmit={handleSubmit}>
+    <div className="SignupForm container">
+      <form onSubmit={handleSubmit}>
         <input
           style={{ width: "400px" }}
           id="Sign-up-first-name"
@@ -40,7 +43,7 @@ function SignUpForm() {
         />
         <input
           style={{ width: "400px" }}
-          id="Sign-up-last-name"
+          id="login-last-name"
           name="lastName"
           className="form-control"
           placeholder="Last Name"
@@ -49,7 +52,7 @@ function SignUpForm() {
         />
         <input
           style={{ width: "400px" }}
-          id="Sign-up-email"
+          id="login-email"
           name="email"
           className="form-control"
           placeholder="Email"
@@ -58,14 +61,16 @@ function SignUpForm() {
         />
         <input
           style={{ width: "400px" }}
-          id="Sign-up-password"
+          id="login-password"
           name="password"
           className="form-control"
           placeholder="Password"
           onChange={handleChange}
           value={signUpInfo.password}
         />
-        <button>Register to meet lonely friends</button>
+        <button className="btn btn-primary">
+          Register to meet lonely friends
+        </button>
       </form>
     </div>
   );
