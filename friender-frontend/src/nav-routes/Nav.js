@@ -16,8 +16,8 @@ function Nav() {
     <div className="Navbar">
       {
         <nav className="Nav navbar navbar-expand-md navbar-dark bg-primary">
-          <NavLink exact to="/" className="nav-brand me-auto">
-            <i> Friender </i>
+          <NavLink exact to="/" className="nav-brand me-auto ">
+            <i className="logo"> Friender </i>
           </NavLink>
 
           <ul className="navbar-nav ms-auto ">

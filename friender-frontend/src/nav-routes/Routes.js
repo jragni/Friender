@@ -5,6 +5,7 @@ import SignupForm from "../forms/SignupForm";
 import LoginForm from "../forms/LoginForm";
 import UserContext from "../UserContext";
 import Homepage from "../Homepage";
+import TestForm from "../forms/TestForm";
 
 function Routes() {
   //private route -> usercontext {props.childre}
@@ -20,6 +21,11 @@ function Routes() {
 
           <Route exact path="/login">
             <LoginForm />
+          </Route>
+
+          <Route exact path="/upload">
+            {/* used for DEV TESTING */}
+            <TestForm />
           </Route>
 
           <Route exact path="/">
