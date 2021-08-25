@@ -27,6 +27,39 @@ db = SQLAlchemy()
 # )
 
 
+class Like(db.Model):
+    """User in the system."""
+
+    __tablename__ = 'likes'
+
+    from_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        primary_key=True,
+    )
+
+    likes_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        primary_key=True,
+    )
+
+class Rejection(db.Model):
+    """User in the system."""
+
+    __tablename__ = 'rejections'
+
+    from_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        primary_key=True,
+    )
+
+    rejections_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+        primary_key=True,
+    )
 class User(db.Model):
     """User in the system."""
 
@@ -58,6 +91,24 @@ class User(db.Model):
         # nullable=False,
     )
 
+    description = db.Column(
+        db.Text,
+    )
+
+    likes = db.relationship(
+        "User",
+        secondary="likes",
+        primaryjoin=( Like.from_id == id),
+        secondaryjoin=( Like.likes_id == id)
+    )
+
+    rejections = db.relationship(
+        "User",
+        secondary="rejections",
+        primaryjoin=( Rejection.from_id == id),
+        secondaryjoin=( Rejection.likes_id == id)
+    )
+
     # REVISIT ONCE AWS IS COMPLETE
     # image_url = db.Column(
     #     db.Text,
@@ -72,10 +123,6 @@ class User(db.Model):
     # REVISIT ONCE WE MAKE Hobby TABLE
     # hobbies_id = db.column(
     #     db.Integer
-    # )
-
-    # description = db.Column(
-    #     db.Text,
     # )
 
     # REVISIT ONCE WE MAKE Friends/Match table
@@ -158,6 +205,10 @@ class User(db.Model):
                 return user
 
         return False
+
+
+
+
 
 
 # class Message(db.Model):
