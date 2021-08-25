@@ -43,7 +43,7 @@ import random
 
 app = Flask(__name__)
 
-CURR_USER_KEY = 1
+CURR_USER_KEY = "CurrentUser"
 # g.user = CURR_USER_KEY
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
@@ -137,7 +137,7 @@ def signup():
 
 
 # Should not need a get route as REACT would build form and send
-# data in JSON
+# data in JSON∂
 @app.route('/login', methods=["POST"])
 def login():
     """Handle user login."""

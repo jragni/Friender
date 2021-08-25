@@ -72,23 +72,23 @@ class User(db.Model):
 
     first_name = db.Column(
         db.String,
-        # nullable=False,
+        nullable=False
     )
 
     last_name = db.Column(
         db.String,
-        # nullable=False,
+        nullable=False
     )
 
     email = db.Column(
         db.Text,
-        # nullable=False,
-        unique=True,
+        nullable=False,
+        unique=True
     )
 
     password = db.Column(
         db.Text,
-        # nullable=False,
+        nullable=False
     )
 
     description = db.Column(
