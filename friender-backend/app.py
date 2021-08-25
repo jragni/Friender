@@ -1,9 +1,9 @@
 import os
 
-from flask import Flask, render_template, request, session, g, jsonify 
+from flask import Flask, render_template, request, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-
+from flask_jwt import JWT, jwt_required, current_identity #used for flask token
 from forms import  UserRegisterForm, LoginForm
 from models import db, connect_db, User
 
@@ -25,20 +25,24 @@ connect_db(app)
 # will need to update later on user, use flask.g
 CURR_USER_KEY = "curr_user"
 
+g.user = CURR_USER_KEY
 ##############################################################################
 # User signup/login/logout
 
-@app.before_request
+# @app.before_request
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
 
     if CURR_USER_KEY in session:
         # DOes this need to change depending on  how we want to get user
-        g.user = User.query.get(session[CURR_USER_KEY])
+        # g.user = User.query.get(session[CURR_USER_KEY])
 
+        g.user = CURR_USER_KEY
     else:
         g.user = None
 
+# NOTE: if we have a single page app, and we make a request to axios we can
+#       check in the session
 
 def do_login(user):
     """Log in user."""
