@@ -1,13 +1,13 @@
-.SignupForm {
+.LoginForm {
   padding: 25px;
 }
 
-.signup-form {
+.login-form {
   text-align: center;
   padding: 1em;
   background-color: #6610f2;
-  border-radius: 2 rem;
   width: 30rem;
+  border-radius: 2rem;
 }
 
 .form-input {

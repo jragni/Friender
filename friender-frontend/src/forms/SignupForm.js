@@ -30,47 +30,42 @@ function SignUpForm() {
   }
 
   return (
-    <div className="SignupForm container">
-      <form onSubmit={handleSubmit}>
+    <div className="SignupForm">
+      <form className="container signup-form" onSubmit={handleSubmit}>
+        <h1> Sign Up </h1>
         <input
-          style={{ width: "400px" }}
-          id="Sign-up-first-name"
+          id="signup-first-name"
           name="firstName"
-          className="form-control"
+          className="form-control form-input"
           placeholder="First Name"
           onChange={handleChange}
           value={signUpInfo.firstName}
         />
         <input
-          style={{ width: "400px" }}
-          id="login-last-name"
+          id="signup-last-name"
           name="lastName"
-          className="form-control"
+          className="form-control form-input"
           placeholder="Last Name"
           onChange={handleChange}
           value={signUpInfo.lastName}
         />
         <input
-          style={{ width: "400px" }}
-          id="login-email"
+          id="signup-email"
           name="email"
-          className="form-control"
+          className="form-control form-input"
           placeholder="Email"
           onChange={handleChange}
           value={signUpInfo.email}
         />
         <input
-          style={{ width: "400px" }}
-          id="login-password"
+          id="signup-password"
           name="password"
-          className="form-control"
+          className="form-control form-input"
           placeholder="Password"
           onChange={handleChange}
           value={signUpInfo.password}
         />
-        <button className="btn btn-primary">
-          Register to meet lonely friends
-        </button>
+        <button className="btn btn-primary">Register</button>
       </form>
     </div>
   );

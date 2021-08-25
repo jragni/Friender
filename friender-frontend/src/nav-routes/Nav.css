@@ -1,3 +1,7 @@
 * {
   list-style-type: none;
 }
+
+Nav .logo {
+  padding: 25px;
+}
