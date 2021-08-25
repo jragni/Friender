@@ -4,10 +4,23 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SignupForm from "../forms/SignupForm";
 import LoginForm from "../forms/LoginForm";
 import UserContext from "../UserContext";
-import Homepage from "../Homepage";
+import Homepage from "../homepage/Homepage";
 import TestForm from "../forms/TestForm";
 
-function Routes() {
+/**Routes
+ * Routes for the web application
+ *
+ * Props;
+ *  - signup  --- function that handles signup requests
+ *  - login  --- funciton that handles login requests
+ *
+ * States:
+ *  None
+ *
+ * App -> Routes -> { SignupForm LoginForm, Homepage }
+ */
+
+function Routes({ signup, login }) {
   //private route -> usercontext {props.childre}
   // const { currentUser } = useContext(UserContext);
   // const token = localStorage.getItem("jobly-token");
@@ -16,17 +29,18 @@ function Routes() {
       {
         <Switch>
           <Route exact path="/signup">
-            <SignupForm />
+            <SignupForm signup={signup} />
           </Route>
 
           <Route exact path="/login">
-            <LoginForm />
+            <LoginForm login={login} />
           </Route>
 
+          {/* DEV TESTING */}
           <Route exact path="/upload">
-            {/* used for DEV TESTING */}
             <TestForm />
           </Route>
+          {/*END DEV TESTING */}
 
           <Route exact path="/">
             <Homepage />
