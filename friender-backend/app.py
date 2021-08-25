@@ -1,13 +1,19 @@
 import os
-
+from botocore.retries import bucket
 from flask import Flask, render_template, request, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 # from flask_jwt import JWT, jwt_required, current_identity #used for flask token
 import jwt
 from forms import  UserRegisterForm, LoginForm
-from models import db, connect_db, User
+from models import Like, db, connect_db, User
 import random
+import helper
+
+S3_BUCKET = os.environ.get('friender-rithm-r-s')
+S3_KEY = os.environ.get("S3_ACCESS_KEY")
+S3_SECRET = os.environ.get("S3_SECRET_KEY")
+S3_Location = "https://s3.console.aws.amazon.com/s3/buckets/friender-rithm-r-s?region=us-west-1&prefix="
 
 app = Flask(__name__)
 
@@ -143,6 +149,9 @@ def logout():
 @app.route('/person')
 def get_profile():
     rand = random.randrange(1,len(User.query.all())+1 ) 
+    User.query
+    print(helper.bucket_name)
     profile = User.query.get(rand)
     serialized = profile.serialize()
     return jsonify(profile=serialized)
+

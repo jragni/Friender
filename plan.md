@@ -24,7 +24,9 @@ INTERESTS
   Interest_id 
   User_id
   interest_name
-Hobbies Table 
+Hobbies Table         GLOBAL OBJECT ACCESSED IN ALL ROUTES
+                        LIKE
+                        DISLIKE
   Hobby id
   User_id
   hobby_name
@@ -40,10 +42,24 @@ Message Jhensen Ray Agni
 
 
 
+react "home"
+  hasprofile usestate = false
+  profile({potential friend})
+
+  useeffect(
+
+
+      api toget profile
+
+
+  )
+
+  like dislike
+    that random id
 
 
 
-
+ if profile <p> load <>
 
 
 
