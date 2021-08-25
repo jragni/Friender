@@ -9,8 +9,7 @@ function TestForm() {
   let history = useHistory();
   const { login } = useContext(UserContext);
   const [loginInfo, setLoginInfo] = useState({
-    email: "",
-    password: "",
+    image: "",
   });
 
   function handleChange(evt) {
@@ -37,7 +36,7 @@ function TestForm() {
             className="form-control"
             placeholder="image"
             onChange={handleChange}
-            value={loginInfo.email}
+            value={loginInfo.image}
           />
         </div>
         <button className="btn btn-primary"> button </button>

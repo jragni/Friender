@@ -32,11 +32,11 @@ function LoginForm() {
           <input
             style={{ width: "400px" }}
             id="email"
-            name="email"
+            name="image"
             className="form-control"
-            placeholder="Email"
+            placeholder="iamge"
             onChange={handleChange}
-            value={loginInfo.email}
+            value={loginInfo.image}
           />
         </div>
         <div className="form-group">

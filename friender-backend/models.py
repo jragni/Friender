@@ -109,6 +109,19 @@ class User(db.Model):
         secondaryjoin=( Rejection.rejections_id == id)
     )
 
+    def is_liked_by(self, likes_id):
+        """Is this user followed by `other_user`?"""
+
+        found_user_list = [user for user in self.likes if user == likes_id]
+        return len(found_user_list) == 1
+
+    def is_following(self, other_user):
+        """Is this user following `other_use`?"""
+
+        found_user_list = [user for user in self.following if user == other_user]
+        return len(found_user_list) == 1
+
+
     # REVISIT ONCE AWS IS COMPLETE
     # image_url = db.Column(
     #     db.Text,
@@ -142,18 +155,7 @@ class User(db.Model):
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"
 
-    # def is_liked_by(self, other_user):
-    #     """Is this user followed by `other_user`?"""
-
-    #     found_user_list = [user for user in self.followers if user == other_user]
-    #     return len(found_user_list) == 1
-
-    # def is_following(self, other_user):
-    #     """Is this user following `other_use`?"""
-
-    #     found_user_list = [user for user in self.following if user == other_user]
-    #     return len(found_user_list) == 1
-
+  
     def serialize(self):
         """Serialize to dictionary."""
 
