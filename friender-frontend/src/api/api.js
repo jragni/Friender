@@ -5,7 +5,6 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
 
 // const BASE_URL = 'https://jobly-forever.herokuapp.com'
 
-
 /** API Class.
  *
  * Static class tying together methods used to get/send to to the API.
@@ -19,11 +18,10 @@ class Api {
   static token;
 
   static async request(endpoint, data = {}, method = "get") {
-
     console.debug("API Call:", endpoint, data, method);
     const url = `${BASE_URL}/${endpoint}`;
     // const headers = { Authorization: `Bearer ${JoblyApi.token}` };
-    const headers = { };
+    const headers = {};
     const params = method === "get" ? data : {};
 
     try {
@@ -34,6 +32,11 @@ class Api {
       let message = err.response.data.error.message;
       throw Array.isArray(message) ? message : [message];
     }
+  }
+
+  static async register(userData) {
+    const res = await this.request("auth/register", userData, "post");
+    return res.token;
   }
 
   // Individual API routes
@@ -78,22 +81,13 @@ class Api {
   //   return res.token;
   // }
 
-  // static async register(userData) {
-  //   const res = await this.request("auth/register", userData, "post");
-
-  //   // console.log(res, " JOBLYAPI signup")
-  //   // console.log("ABOUT TO SET JOBLY API TOKEN")
-  //   // this.token = res.token;
-  //   return res.token;
-  // }
-
   // static async getUserInfo(username) {
   //   const res = await this.request(`users/${username}`, username);
 
   //   // console.log(res, " JOBLYAPI getUser");
   //   return res.user;
   // }
-  
+
   // //updates userinfo
   // static async updateProfile(profileInfo){
   //   const {username} =  jwt.decode(this.token)

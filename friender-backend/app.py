@@ -3,8 +3,7 @@ import os
 from flask import Flask, render_template, request, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-# from flask_jwt import JWT, jwt_required, current_identity #used for flask token
-import jwt
+from flask_jwt import JWT, jwt_required, current_identity #used for flask token
 from forms import  UserRegisterForm, LoginForm
 from models import db, connect_db, User
 
