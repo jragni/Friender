@@ -16,19 +16,19 @@ function Nav() {
     <div className="Navbar">
       {
         <nav className="Nav navbar navbar-expand-md navbar-dark bg-primary">
-          <NavLink exact to="/" className="nav-brand">
+          <NavLink exact to="/" className="nav-brand me-auto">
             <i> Friender </i>
           </NavLink>
 
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item mr-4">
+          <ul className="navbar-nav ms-auto ">
+            <li className="navbar-nav mr-4">
               <NavLink exact to="/login" className="nav-link">
                 Login
               </NavLink>
             </li>
             <li className="navbar-nav mr-4">
               <NavLink exact to="/signup" className="nav-link">
-                SignUp
+                Sign Up
               </NavLink>
             </li>
           </ul>
