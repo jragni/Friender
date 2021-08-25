@@ -106,7 +106,7 @@ class User(db.Model):
         "User",
         secondary="rejections",
         primaryjoin=( Rejection.from_id == id),
-        secondaryjoin=( Rejection.likes_id == id)
+        secondaryjoin=( Rejection.rejections_id == id)
     )
 
     # REVISIT ONCE AWS IS COMPLETE
@@ -136,26 +136,13 @@ class User(db.Model):
 
     # messages = db.relationship('Message')
 
-    # followers = db.relationship(
-    #     "User",
-    #     secondary="follows",
-    #     primaryjoin=(Follows.user_being_followed_id == id),
-    #     secondaryjoin=(Follows.user_following_id == id)
-    # )
-
-    # following = db.relationship(
-    #     "User",
-    #     secondary="follows",
-    #     primaryjoin=(Follows.user_following_id == id),
-    #     secondaryjoin=(Follows.user_being_followed_id == id)
-    # )
 
     # liked_messages = db.relationship('Message', secondary="likes")
 
     def __repr__(self):
         return f"<User #{self.id}: {self.username}, {self.email}>"
 
-    # def is_followed_by(self, other_user):
+    # def is_liked_by(self, other_user):
     #     """Is this user followed by `other_user`?"""
 
     #     found_user_list = [user for user in self.followers if user == other_user]
@@ -167,6 +154,17 @@ class User(db.Model):
     #     found_user_list = [user for user in self.following if user == other_user]
     #     return len(found_user_list) == 1
 
+    def serialize(self):
+        """Serialize to dictionary."""
+
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email":self.email,
+            "description":self.description
+        }
+        
     @classmethod
     def signup(cls, first_name, last_name, email, password):
         """Sign up user.
