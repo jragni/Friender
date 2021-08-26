@@ -1,11 +1,12 @@
 import React from "react";
+import MatchCarousel from "../matcher/MatchCarousel";
 import "bootswatch/dist/quartz/bootstrap.min.css";
 
 function Homepage({ currentUser }) {
   return (
     <div className="Homepage">
       {true /* set true for if logged in for now */ ? (
-        <h1> Welcome {currentUser.firstName} </h1>
+        <MatchCarousel />
       ) : (
         <h2> Unauthorized Access </h2>
       )}

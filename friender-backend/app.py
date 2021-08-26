@@ -66,13 +66,14 @@ connect_db(app)
 ##############################################################################
 # User signup/login/logout
 
-# @app.before_request
+@app.before_request
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
 
     if CURR_USER_KEY in session:
         # DOes this need to change depending on  how we want to get user
         g.user = User.query.get(session[CURR_USER_KEY])
+
 
     else:
         g.user = None
@@ -84,6 +85,8 @@ def do_login(user):
     """Log in user."""
 
     session[CURR_USER_KEY] = user.id
+    
+
 
 
 def do_logout():
@@ -152,7 +155,7 @@ def login():
 
         if user:
             do_login(user)
-
+            
             return jsonify(success="success")
     # Return error later
     return jsonify(failed="failed")
@@ -174,15 +177,32 @@ def logout():
 @app.route('/person')
 def get_profile():
     rand = random.randrange(1,len(User.query.all())+1 ) 
-    profile = User.query.get(rand)
+    profile  = User.query.get(rand)
     serialized = profile.serialize()
     return jsonify(profile=serialized)
 
-# @app.route('/likes', methods=["POST"])
-# def likes():
-#     g.user = User.query.get(CURR_USER_KEY)
-#     id = request.json["id"]
-#     g.user.likes.append(id)
-#     db.session.commit()
+@app.route('/likes', methods=["POST"])
+def likes():
+    
+    likes_id = int(request.json["id"])
+    liked_user = User.query.get_or_404(likes_id)
+    g.user = User.query.get(session[CURR_USER_KEY])
+    g.user.likes.append(liked_user)
 
-#     return jsonify(id=id)
+    db.session.commit()
+
+    return jsonify(success="likes")
+
+@app.route('/rejects', methods=["POST"])
+def rejects():
+    rejects_id = int(request.json["id"])
+    rejected_user = User.query.get_or_404(rejects_id)
+    g.user = User.query.get(session[CURR_USER_KEY])
+    g.user.likes.append(rejected_user)
+
+    db.session.commit()
+
+    return jsonify(success="likes")
+
+
+@app.route('/messages')

@@ -1,12 +1,19 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import "./SignupForm.css";
-import UserContext from "../UserContext";
-// import { useHistory } from "react-router-dom";
 
-function SignUpForm() {
+/**SignUpForm
+ * form for users to sign up
+ *
+ * Props:
+ *  - signup  --
+ * States:
+ *  - signupInfo  --- form fields {firstName, lastName, email, password}
+ *
+ * Routes -> SignUpForm
+ */
+function SignUpForm({ signup }) {
   const history = useHistory();
-  const { signup } = useContext(UserContext);
   const [signUpInfo, setSignUpInfo] = useState({
     firstName: "",
     lastName: "",
