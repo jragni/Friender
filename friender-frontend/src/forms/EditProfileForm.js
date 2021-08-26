@@ -29,6 +29,7 @@ function EditProfileForm({ update }) {
     lastName,
     email,
     password: "",
+    selectedFile: "",
     description,
     zip,
     radius,
@@ -36,6 +37,7 @@ function EditProfileForm({ update }) {
 
   function handleChange(evt) {
     const { name, value } = evt.target;
+    console.log(userInfo);
     setUserInfo((userInfo) => ({
       ...userInfo,
       [name]: value,
@@ -113,6 +115,15 @@ function EditProfileForm({ update }) {
           placeholder="Tell us about yourself..."
           onChange={handleChange}
           value={userInfo.description}
+        />
+
+        <input
+          id="user-selectedFile"
+          name="selectedFile"
+          type="file"
+          className="form-control form-input"
+          onChange={handleChange}
+          value={userInfo.selectedFile}
         />
 
         <input
