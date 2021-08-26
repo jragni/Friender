@@ -21,10 +21,13 @@ function App() {
   /** END DEV **/
 
   // TODO: have user persist throughout screen refresh and same browser
+
   const [currentUser, setCurrentUser] = useState(_testuser);
   const [isLoaded, setIsLoaded] = useState(true); // SET TO false for DEV
 
   function login() {}
+
+  function updateProfile() {}
 
   function signup() {}
 
@@ -40,7 +43,12 @@ function App() {
       {/* FOR DEV-- change later*/}
       <div className="App">
         <Nav logout={logout} />
-        <Routes getMatches={getMatches} login={login} signup={signup} />
+        <Routes
+          update={updateProfile}
+          getMatches={getMatches}
+          login={login}
+          signup={signup}
+        />
       </div>
     </UserContext.Provider>
   );

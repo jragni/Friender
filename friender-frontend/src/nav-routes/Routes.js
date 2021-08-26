@@ -7,6 +7,7 @@ import UserContext from "../UserContext";
 import Homepage from "../homepage/Homepage";
 import Matches from "../matches/Matches";
 import TestForm from "../forms/TestForm"; // FOR DEV
+import EditProfileForm from "../forms/EditProfileForm";
 
 /**Routes
  * Routes for the web application
@@ -18,42 +19,46 @@ import TestForm from "../forms/TestForm"; // FOR DEV
  * States:
  *  None
  *
- * App -> Routes -> { SignupForm, LoginForm, Homepage, Matches }
+ * App -> Routes -> { SignupForm, LoginForm, Homepage, Matches, EditProfileForm }
  */
 
-function Routes({ signup, login, getMatches }) {
+function Routes({ signup, login, update, getMatches }) {
+  const currentUser = useContext(UserContext);
   //private route -> usercontext {props.childre}
+
   // const { currentUser } = useContext(UserContext);
   // const token = localStorage.getItem("jobly-token");
   return (
     <div className="Routes">
-      {
-        <Switch>
-          <Route exact path="/signup">
-            <SignupForm signup={signup} />
-          </Route>
+      <Switch>
+        <Route exact path="/signup">
+          <SignupForm signup={signup} />
+        </Route>
 
-          <Route exact path="/login">
-            <LoginForm login={login} />
-          </Route>
+        <Route exact path="/login">
+          <LoginForm login={login} />
+        </Route>
 
-          <Route exact path="/matches">
-            <Matches getMatches={getMatches} />
-          </Route>
+        {/* DEV TESTING */}
+        <Route exact path="/upload">
+          <TestForm />
+        </Route>
+        {/*END DEV TESTING */}
 
-          {/* DEV TESTING */}
-          <Route exact path="/upload">
-            <TestForm />
-          </Route>
-          {/*END DEV TESTING */}
+        <Route exact path="/">
+          <Homepage />
+        </Route>
 
-          <Route exact path="/">
-            <Homepage />
-          </Route>
+        <Redirect to="/" />
+      </Switch>
 
-          <Redirect to="/" />
-        </Switch>
-      }
+      <Route exact path="/matches">
+        <Matches getMatches={getMatches} />
+      </Route>
+
+      <Route exact path="/profile">
+        <EditProfileForm update={update} />
+      </Route>
     </div>
   );
 }

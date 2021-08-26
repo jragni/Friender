@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import UserContext from "../UserContext";
 import MatchCard from "./MatchCard";
+import "./Matches.css";
 
 // FOR DEV TESTING ---- delete later
 const userTest1 = {
@@ -49,17 +50,23 @@ function Matches({ getMatches }) {
     userTest4,
   ]);
   /** TODO: fetch list of user's matches from the API */
+
   return (
     <div className="Matches container">
       <h1>
         <i>Your Matches</i>
       </h1>
-      {matches.length === 0 ? (
-        <i> No matches? Keep Trying {"<3"}</i>
-      ) : (
-        matches.map((m, idx) => <MatchCard key={m.id} match={m} />)
-      )}
-      )
+      <ul className="d-flex flex-wrap Matches--list">
+        {matches.length === 0 ? (
+          <i> No matches? Keep Trying {"<3"}</i>
+        ) : (
+          matches.map((m, idx) => (
+            <li key={m.id}>
+              <MatchCard key={m.id} match={m} />
+            </li>
+          ))
+        )}
+      </ul>
     </div>
   );
 }
