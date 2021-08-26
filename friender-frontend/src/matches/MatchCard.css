@@ -1,0 +1,12 @@
+.MatchCard {
+  max-width: 20rem;
+}
+
+svg {
+  font-size: 1.125rem;
+  text-anchor: middle;
+}
+
+.card-btn {
+  margin: 0.25rem;
+}
