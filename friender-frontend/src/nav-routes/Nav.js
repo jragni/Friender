@@ -37,9 +37,18 @@ function Nav({ logout }) {
             </li>
           </ul>
         ) : (
-          <NavLink to="/" className="nav-link" onClick={logout}>
-            Log out as {currentUser.firstName}
-          </NavLink>
+          <ul className="navbar-nav ms-auto ">
+            <li className="navbar-nav mr-4">
+              <NavLink to="/matches" className="nav-link">
+                Matches
+              </NavLink>
+            </li>
+            <li className="navbar-nav mr-4">
+              <NavLink to="/" className="nav-link" onClick={logout}>
+                Log out as {currentUser.firstName}
+              </NavLink>
+            </li>
+          </ul>
         )}
       </nav>
     </div>

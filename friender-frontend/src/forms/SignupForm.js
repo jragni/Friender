@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import UserContext from "../UserContext";
 import "./SignupForm.css";
 
 /**SignUpForm
@@ -14,6 +15,11 @@ import "./SignupForm.css";
  */
 function SignUpForm({ signup }) {
   const history = useHistory();
+
+  const currentUser = useContext(UserContext);
+  if (currentUser) history.push("/");
+
+  // STATES
   const [signUpInfo, setSignUpInfo] = useState({
     firstName: "",
     lastName: "",

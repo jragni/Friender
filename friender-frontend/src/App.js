@@ -16,11 +16,13 @@ function App() {
     email: "test@test.com",
     firstName: "testFN",
     lastName: "testLN",
+    userId: 1,
   };
   /** END DEV **/
 
   // TODO: have user persist throughout screen refresh and same browser
   const [currentUser, setCurrentUser] = useState(_testuser);
+  const [isLoaded, setIsLoaded] = useState(false); // SET TO false for DEV
   function login() {}
 
   function signup() {}
@@ -29,12 +31,15 @@ function App() {
     setCurrentUser(null);
   }
 
+  function getMatches() {}
+
+  if (!isLoaded) return <i> LOADING... lonely? </i>;
   return (
     <UserContext.Provider value={currentUser}>
       {/* FOR DEV-- change later*/}
       <div className="App">
         <Nav logout={logout} />
-        <Routes login={login} signup={signup} />
+        <Routes getMatches={getMatches} login={login} signup={signup} />
       </div>
     </UserContext.Provider>
   );

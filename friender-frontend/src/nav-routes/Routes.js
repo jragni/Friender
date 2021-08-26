@@ -5,7 +5,8 @@ import SignupForm from "../forms/SignupForm";
 import LoginForm from "../forms/LoginForm";
 import UserContext from "../UserContext";
 import Homepage from "../homepage/Homepage";
-import TestForm from "../forms/TestForm";
+import Matches from "../matches/Matches";
+import TestForm from "../forms/TestForm"; // FOR DEV
 
 /**Routes
  * Routes for the web application
@@ -17,10 +18,10 @@ import TestForm from "../forms/TestForm";
  * States:
  *  None
  *
- * App -> Routes -> { SignupForm LoginForm, Homepage }
+ * App -> Routes -> { SignupForm, LoginForm, Homepage, Matches }
  */
 
-function Routes({ signup, login }) {
+function Routes({ signup, login, getMatches }) {
   //private route -> usercontext {props.childre}
   // const { currentUser } = useContext(UserContext);
   // const token = localStorage.getItem("jobly-token");
@@ -34,6 +35,10 @@ function Routes({ signup, login }) {
 
           <Route exact path="/login">
             <LoginForm login={login} />
+          </Route>
+
+          <Route exact path="/matches">
+            <Matches getMatches={getMatches} />
           </Route>
 
           {/* DEV TESTING */}
