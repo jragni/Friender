@@ -10,6 +10,7 @@ from models import Like, db, connect_db, User, Match
 import random
 import requests
 from requests.auth import HTTPBasicAuth
+from dotenv import load_dotenv
 
 
 
@@ -185,12 +186,13 @@ def logout():
 def get_profile():
 
     email = os.getenv("EMAIL")
-    email_password =  os.getenv("EMAIL_PASSWORD")
-    zip_api_key =  os.getenv("ZIP_API_KEY")
+    email_password =  os.environ.get("EMAIL_PASSWORD")
+    zip_api_key =  os.environ.get("ZIP_API_KEY")
 
     # r = requests.get(f"https://service.zipapi.us/zipcode/radius/90210?X-API-KEY={zip_api_key}&radius=10",
     # auth=HTTPBasicAuth(email, email_password))
 
+    print(os.environ)
     print(zip_api_key,email,email_password)
 
     # rand = random.randrange(1,len(User.query.all())+1 ) 
