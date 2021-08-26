@@ -1,6 +1,8 @@
 import os
 import boto3
+from dotenv import load_dotenv
 
+load_dotenv()
 aws_access_key = os.environ.get('S3_ACCESS_KEY')
 aws_secret_key = os.environ.get('S3_SECRET_KEY')
 
@@ -25,3 +27,6 @@ def upload_file(file, object_name=None):
     except Exception as e:
         print("Something Happened: ", e)
 
+
+file = "/Users/simonzhang/Desktop/Rithm/week-10/Friender/friender-backend/rick-and-morty.jpg"
+upload_file(file)
