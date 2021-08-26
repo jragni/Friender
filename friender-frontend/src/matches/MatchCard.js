@@ -16,7 +16,7 @@ import defaulImg from "./blank-profile-picture-973460_1280.png";
  *
  * MatchList -> MatchCard
  */
-function MatchCard({ match }) {
+function MatchCard({ unmatch, match }) {
   console.log("MatchCard rendering...");
   const { firstName, lastName, description, id, image_url } = match;
   const fullName = `${firstName} ${lastName}`;
@@ -34,9 +34,9 @@ function MatchCard({ match }) {
         <Link href="/" className="btn btn-primary btn-sm card-btn">
           Chat
         </Link>
-        <Link href="/" className="btn btn-danger btn-sm card-btn">
+        <button onClick={unmatch} className="btn btn-danger btn-sm card-btn">
           Unmatch
-        </Link>
+        </button>
       </div>
     </div>
   );

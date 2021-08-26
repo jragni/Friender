@@ -39,7 +39,7 @@ const userTest4 = {
  *  - getMatches --- function to get users matches
  * Routes -> Matches
  */
-function Matches({ getMatches }) {
+function Matches({ unmatch, getMatches }) {
   const currentUser = useContext(UserContext);
   const history = useHistory();
   if (!currentUser) history.push("/");
@@ -62,7 +62,7 @@ function Matches({ getMatches }) {
         ) : (
           matches.map((m, idx) => (
             <li key={m.id}>
-              <MatchCard key={m.id} match={m} />
+              <MatchCard key={m.id} unmatch={unmatch} match={m} />
             </li>
           ))
         )}

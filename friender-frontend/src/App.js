@@ -27,6 +27,8 @@ function App() {
 
   function login() {}
 
+  function unmatch() {}
+
   function updateProfile() {}
 
   function signup() {}
@@ -45,6 +47,7 @@ function App() {
         <Nav logout={logout} />
         <Routes
           update={updateProfile}
+          unmatch={unmatch}
           getMatches={getMatches}
           login={login}
           signup={signup}

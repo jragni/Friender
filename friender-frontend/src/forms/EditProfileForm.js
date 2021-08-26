@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import UserContext from "../UserContext";
-import "./SignupForm.css";
+import "./EditProfileForm.css";
 
 /**EditProfileForm
  * form for users to edit their profile. In order to edit profile, user
@@ -16,70 +16,116 @@ import "./SignupForm.css";
  */
 function EditProfileForm({ update }) {
   console.log("EditProfileForm: rendering");
+
   const history = useHistory();
   const currentUser = useContext(UserContext);
-  console.log("EditProfileForm, currentUser: ", currentUser);
+  let { firstName, lastName, email, description, zip, radius } = currentUser;
+  description = description || "";
   if (!currentUser) history.push("/");
 
   // STATES
   const [userInfo, setUserInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName,
+    lastName,
+    email,
     password: "",
+    description,
+    zip,
+    radius,
   });
 
   function handleChange(evt) {
     const { name, value } = evt.target;
-    setUserInfo((SignUpData) => ({
-      ...SignUpData,
+    setUserInfo((userInfo) => ({
+      ...userInfo,
       [name]: value,
     }));
   }
-  // Sends search back to parent component
+
+  /** submits user updates to api, will flash error if password is invalid */
   function handleSubmit(evt) {
     evt.preventDefault();
-    update(userInfo);
-    history.push("/");
+    try {
+      update(userInfo);
+      history.push("/");
+    } catch {
+      //TODO: handle invalid password
+    }
   }
 
   return (
-    <div className="SignupForm">
-      <form className="container signup-form" onSubmit={handleSubmit}>
-        <h1> Sign Up </h1>
+    <div className="EditProfileForm">
+      <form className="container EditProfileForm-form" onSubmit={handleSubmit}>
+        <h1> Edit Profile </h1>
+
         <input
-          id="signup-first-name"
+          id="user-first-name"
           name="firstName"
           className="form-control form-input"
           placeholder="First Name"
           onChange={handleChange}
           value={userInfo.firstName}
         />
+
         <input
-          id="signup-last-name"
+          id="user-last-name"
           name="lastName"
           className="form-control form-input"
           placeholder="Last Name"
           onChange={handleChange}
           value={userInfo.lastName}
         />
+
         <input
-          id="signup-email"
+          id="user-email"
           name="email"
           className="form-control form-input"
           placeholder="Email"
           onChange={handleChange}
           value={userInfo.email}
+          readOnly
         />
         <input
-          id="signup-password"
+          id="signup-radius"
+          type="number"
+          min="10"
+          max="100"
+          name="radius"
+          className="form-control form-input"
+          placeholder="Friend search radius? (miles)"
+          onChange={handleChange}
+          value={userInfo.radius}
+        />
+        <input
+          id="signup-zip"
+          name="zip"
+          pattern="[0-9]{5}"
+          className="form-control form-input"
+          placeholder="Your ZIP code"
+          onChange={handleChange}
+          value={userInfo.zip}
+        />
+
+        <textarea
+          id="user-description"
+          name="description"
+          className="form-control form-input"
+          placeholder="Tell us about yourself..."
+          onChange={handleChange}
+          value={userInfo.description}
+        />
+
+        <input
+          id="user-password"
           name="password"
+          type="password"
           className="form-control form-input"
           placeholder="Password"
           onChange={handleChange}
           value={userInfo.password}
+          required
         />
-        <button className="btn btn-primary">Register</button>
+        <button className="btn btn-primary">Submit</button>
       </form>
     </div>
   );

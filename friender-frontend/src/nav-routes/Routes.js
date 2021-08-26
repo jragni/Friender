@@ -22,12 +22,26 @@ import EditProfileForm from "../forms/EditProfileForm";
  * App -> Routes -> { SignupForm, LoginForm, Homepage, Matches, EditProfileForm }
  */
 
-function Routes({ signup, login, update, getMatches }) {
+function Routes({ signup, login, update, unmatch, getMatches }) {
   const currentUser = useContext(UserContext);
   //private route -> usercontext {props.childre}
 
   // const { currentUser } = useContext(UserContext);
   // const token = localStorage.getItem("jobly-token");
+  function renderLoggedIn() {
+    return (
+      <div className="Routes-logged-in">
+        <Route exact path="/matches">
+          <Matches unmatch={unmatch} getMatches={getMatches} />
+        </Route>
+
+        <Route exact path="/profile">
+          <EditProfileForm update={update} />
+        </Route>
+      </div>
+    );
+  }
+
   return (
     <div className="Routes">
       <Switch>
@@ -45,20 +59,13 @@ function Routes({ signup, login, update, getMatches }) {
         </Route>
         {/*END DEV TESTING */}
 
+        {currentUser ? renderLoggedIn() : ""}
         <Route exact path="/">
           <Homepage />
         </Route>
 
         <Redirect to="/" />
       </Switch>
-
-      <Route exact path="/matches">
-        <Matches getMatches={getMatches} />
-      </Route>
-
-      <Route exact path="/profile">
-        <EditProfileForm update={update} />
-      </Route>
     </div>
   );
 }

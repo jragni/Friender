@@ -25,6 +25,8 @@ function SignUpForm({ signup }) {
     lastName: "",
     email: "",
     password: "",
+    radius: "",
+    zip: "",
   });
 
   function handleChange(evt) {
@@ -53,6 +55,7 @@ function SignUpForm({ signup }) {
           placeholder="First Name"
           onChange={handleChange}
           value={signUpInfo.firstName}
+          required
         />
         <input
           id="signup-last-name"
@@ -61,14 +64,38 @@ function SignUpForm({ signup }) {
           placeholder="Last Name"
           onChange={handleChange}
           value={signUpInfo.lastName}
+          required
+        />
+        <input
+          id="signup-radius"
+          name="radius"
+          type="number"
+          className="form-control form-input"
+          placeholder="Friend search radius? (miles)"
+          onChange={handleChange}
+          min="10"
+          max="100"
+          value={signUpInfo.radius}
+          required
+        />
+        <input
+          id="signup-zip"
+          name="zip"
+          className="form-control form-input"
+          placeholder="Your ZIP code"
+          onChange={handleChange}
+          value={signUpInfo.zip}
+          required
         />
         <input
           id="signup-email"
+          type="email"
           name="email"
           className="form-control form-input"
           placeholder="Email"
           onChange={handleChange}
           value={signUpInfo.email}
+          required
         />
         <input
           id="signup-password"
@@ -77,6 +104,7 @@ function SignUpForm({ signup }) {
           placeholder="Password"
           onChange={handleChange}
           value={signUpInfo.password}
+          required
         />
         <button className="btn btn-primary">Register</button>
       </form>
