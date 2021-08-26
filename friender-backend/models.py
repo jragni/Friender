@@ -60,6 +60,7 @@ class Rejection(db.Model):
         db.ForeignKey('users.id'),
         primary_key=True,
     )
+
 class User(db.Model):
     """User in the system."""
 
@@ -72,23 +73,23 @@ class User(db.Model):
 
     first_name = db.Column(
         db.String,
-        # nullable=False,
+        nullable=False
     )
 
     last_name = db.Column(
         db.String,
-        # nullable=False,
+        nullable=False
     )
 
     email = db.Column(
         db.Text,
-        # nullable=False,
-        unique=True,
+        nullable=False,
+        unique=True
     )
 
     password = db.Column(
         db.Text,
-        # nullable=False,
+        nullable=False
     )
 
     description = db.Column(
@@ -108,6 +109,13 @@ class User(db.Model):
         primaryjoin=( Rejection.from_id == id),
         secondaryjoin=( Rejection.rejections_id == id)
     )
+
+    def is_liked_by(self, likes_id):
+        """Is this user followed by `other_user`?"""
+
+        found_user_list = [user for user in self.likes if user == likes_id]
+        return len(found_user_list) == 1
+
 
     # REVISIT ONCE AWS IS COMPLETE
     # image_url = db.Column(
@@ -140,20 +148,9 @@ class User(db.Model):
     # liked_messages = db.relationship('Message', secondary="likes")
 
     def __repr__(self):
-        return f"<User #{self.id}: {self.username}, {self.email}>"
+        return f"<User #{self.id}: {self.first_name}, {self.last_name}, {self.email}>"
 
-    # def is_liked_by(self, other_user):
-    #     """Is this user followed by `other_user`?"""
-
-    #     found_user_list = [user for user in self.followers if user == other_user]
-    #     return len(found_user_list) == 1
-
-    # def is_following(self, other_user):
-    #     """Is this user following `other_use`?"""
-
-    #     found_user_list = [user for user in self.following if user == other_user]
-    #     return len(found_user_list) == 1
-
+  
     def serialize(self):
         """Serialize to dictionary."""
 
@@ -209,34 +206,41 @@ class User(db.Model):
 
 
 
-# class Message(db.Model):
-#     """An individual message ("warble")."""
+class Message(db.Model):
+    """An individual messag"""
 
-#     __tablename__ = 'messages'
+    __tablename__ = 'messages'
 
-#     id = db.Column(
-#         db.Integer,
-#         primary_key=True,
-#     )
+    id = db.Column(
+        db.Integer,
+        primary_key=True,
+    )
 
-#     text = db.Column(
-#         db.String(140),
-#         nullable=False,
-#     )
+    text = db.Column(
+        db.String(140),
+        nullable=False,
+    )
 
-#     timestamp = db.Column(
-#         db.DateTime,
-#         nullable=False,
-#         default=datetime.utcnow(),
-#     )
+    timestamp = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=datetime.utcnow(),
+    )
 
-#     user_id = db.Column(
-#         db.Integer,
-#         db.ForeignKey('users.id', ondelete='CASCADE'),
-#         nullable=False,
-#     )
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+    )
 
-#     user = db.relationship('User')
+    to_user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+    )
+
+
+    user = db.relationship('User')
 
 
 # def connect_db(app):

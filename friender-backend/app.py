@@ -1,5 +1,5 @@
 import os
-from botocore.retries import bucket
+import boto3
 from flask import Flask, render_template, request, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
@@ -8,16 +8,42 @@ import jwt
 from forms import  UserRegisterForm, LoginForm
 from models import Like, db, connect_db, User
 import random
-import helper
 
-S3_BUCKET = os.environ.get('friender-rithm-r-s')
-S3_KEY = os.environ.get("S3_ACCESS_KEY")
-S3_SECRET = os.environ.get("S3_SECRET_KEY")
-S3_Location = "https://s3.console.aws.amazon.com/s3/buckets/friender-rithm-r-s?region=us-west-1&prefix="
+
+# aws_access_key = os.environ.get('S3_ACCESS_KEY')
+# aws_secret_key = os.environ.get('S3_SECRET_KEY')
+# bucket_name='friender-rithm-r-s'
+
+
+# s3 = boto3.client(
+#   "s3",
+#   region_name="us-west-1",
+#   aws_access_key_id=aws_access_key,
+#   aws_secret_access_key=aws_secret_key
+# )
+# boto3.resource(
+#   "s3",
+#   region_name="us-west-1",
+#   aws_access_key_id=aws_access_key,
+#   aws_secret_access_key=aws_secret_key
+# )
+
+# def upload_file(file, object_name=None):
+
+#     if object_name is None:
+#         object_name = os.path.basename(file)
+
+#     try:
+#         s3.upload_file(file, bucket_name ,object_name, ExtraArgs={ "ContentType": "image/jpeg"})
+
+#     except Exception as e:
+#         print("Something Happened: ", e)
+
+
 
 app = Flask(__name__)
 
-CURR_USER_KEY = "curr_user"
+CURR_USER_KEY = "CurrentUser"
 # g.user = CURR_USER_KEY
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
@@ -40,15 +66,15 @@ connect_db(app)
 ##############################################################################
 # User signup/login/logout
 
-# @app.before_request
+@app.before_request
 def add_user_to_g():
     """If we're logged in, add curr user to Flask global."""
 
     if CURR_USER_KEY in session:
         # DOes this need to change depending on  how we want to get user
-        # g.user = User.query.get(session[CURR_USER_KEY])
+        g.user = User.query.get(session[CURR_USER_KEY])
 
-        g.user = CURR_USER_KEY
+
     else:
         g.user = None
 
@@ -59,6 +85,8 @@ def do_login(user):
     """Log in user."""
 
     session[CURR_USER_KEY] = user.id
+    
+
 
 
 def do_logout():
@@ -112,7 +140,7 @@ def signup():
 
 
 # Should not need a get route as REACT would build form and send
-# data in JSON
+# data in JSON∂
 @app.route('/login', methods=["POST"])
 def login():
     """Handle user login."""
@@ -127,7 +155,7 @@ def login():
 
         if user:
             do_login(user)
-
+            
             return jsonify(success="success")
     # Return error later
     return jsonify(failed="failed")
@@ -149,9 +177,32 @@ def logout():
 @app.route('/person')
 def get_profile():
     rand = random.randrange(1,len(User.query.all())+1 ) 
-    User.query
-    print(helper.bucket_name)
-    profile = User.query.get(rand)
+    profile  = User.query.get(rand)
     serialized = profile.serialize()
     return jsonify(profile=serialized)
 
+@app.route('/likes', methods=["POST"])
+def likes():
+    
+    likes_id = int(request.json["id"])
+    liked_user = User.query.get_or_404(likes_id)
+    g.user = User.query.get(session[CURR_USER_KEY])
+    g.user.likes.append(liked_user)
+
+    db.session.commit()
+
+    return jsonify(success="likes")
+
+@app.route('/rejects', methods=["POST"])
+def rejects():
+    rejects_id = int(request.json["id"])
+    rejected_user = User.query.get_or_404(rejects_id)
+    g.user = User.query.get(session[CURR_USER_KEY])
+    g.user.likes.append(rejected_user)
+
+    db.session.commit()
+
+    return jsonify(success="likes")
+
+
+@app.route('/messages')

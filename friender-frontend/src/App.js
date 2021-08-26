@@ -11,6 +11,7 @@ import UserContext from "./UserContext";
  * An app that allows the user to meet adults in their area
  */
 function App() {
+<<<<<<< HEAD
   /** FOR DEV **/
   const _testuser = {
     email: "test@test.com",
@@ -23,6 +24,9 @@ function App() {
   // TODO: have user persist throughout screen refresh and same browser
   const [currentUser, setCurrentUser] = useState(_testuser);
   const [isLoaded, setIsLoaded] = useState(false); // SET TO false for DEV
+=======
+  
+>>>>>>> 5a8c2237db02ae554c17fc825440a6dd95efc0be
   function login() {}
 
   function signup() {}

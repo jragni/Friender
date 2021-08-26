@@ -24,9 +24,8 @@ INTERESTS
   Interest_id 
   User_id
   interest_name
-Hobbies Table         GLOBAL OBJECT ACCESSED IN ALL ROUTES
-                        LIKE
-                        DISLIKE
+Hobbies Table        
+                    
   Hobby id
   User_id
   hobby_name
@@ -64,4 +63,4 @@ react "home"
 
 
 Thread
-
+message
