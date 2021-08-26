@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import MatchCarousel from "../matcher/MatchCarousel";
-import "bootswatch/dist/quartz/bootstrap.min.css";
+import UserContext from "../UserContext";
+import { Link } from "react-router-dom";
 
-function Homepage({ currentUser }) {
+function Homepage() {
+  const currentUser = useContext(UserContext);
   return (
     <div className="Homepage">
-      {true /* set true for if logged in for now */ ? (
+      {currentUser /* set true for if logged in for now */ ? (
         <MatchCarousel />
       ) : (
-        <h2> Unauthorized Access </h2>
+        <div>
+          <Link className="btn" to="/login">
+            Log In{" "}
+          </Link>
+          <Link className="btn" to="/signup">
+            {" "}
+            Sign Up{" "}
+          </Link>
+        </div>
       )}
     </div>
   );
