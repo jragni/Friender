@@ -1,3 +1,4 @@
+import "./Homepage.css";
 import React, { useContext } from "react";
 import MatchCarousel from "../matcher/MatchCarousel";
 import UserContext from "../UserContext";
@@ -10,14 +11,23 @@ function Homepage() {
       {currentUser /* set true for if logged in for now */ ? (
         <MatchCarousel />
       ) : (
-        <div>
-          <Link className="btn" to="/login">
-            Log In{" "}
-          </Link>
-          <Link className="btn" to="/signup">
-            {" "}
-            Sign Up{" "}
-          </Link>
+        <div className="container homepage-jumbotron">
+          <main className="card container">
+            <div className="card-body">
+              <h1> Friendster </h1>
+              <h4 className="card-subtitle text-muted">
+                ~Meet lonely adults in your area~
+              </h4>
+              <div className="card-body">
+                <Link className="btn btn-login btn-lg" to="/login">
+                  Log In
+                </Link>
+                <Link className="btn btn-signup btn-lg" to="/signup">
+                  Sign Up
+                </Link>
+              </div>
+            </div>
+          </main>
         </div>
       )}
     </div>
