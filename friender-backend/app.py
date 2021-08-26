@@ -249,11 +249,5 @@ def match():
     
     matches_unserialized = [ User.query.get(id) for id in matches_id ]
     matches = [ user.serialize() for user in matches_unserialized]
-
-    # for like in likes:
-    #     potential_matches = User.query.get(like.id)
-    #     for  potential_match in potential_matches.likes:
-    #         if potential_match.id == session[CURR_USER_KEY]:
-    #             matches.append(like.serialize()) 
     
     return jsonify(matches=matches)
