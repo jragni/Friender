@@ -6,8 +6,12 @@ from sqlalchemy.exc import IntegrityError
 # from flask_jwt import JWT, jwt_required, current_identity #used for flask token
 import jwt
 from forms import  UserRegisterForm, LoginForm
-from models import Like, db, connect_db, User
+from models import Like, db, connect_db, User, Match
 import random
+import requests
+from requests.auth import HTTPBasicAuth
+
+
 
 
 # aws_access_key = os.environ.get('S3_ACCESS_KEY')
@@ -116,14 +120,15 @@ def signup():
     # TURNING OFF CSRF? BECASUE REACT -> FLASK react no csrf
     form = UserRegisterForm( formadata=incoming_request,
                         meta={'csrf': False})
-
     if form.validate_on_submit():
         try:
             user = User.signup(
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 email=form.email.data,
-                password=form.password.data
+                password=form.password.data,
+                zipcode=form.zipcode.data,
+                friend_radius = form.friend_radius.data
             )
             db.session.commit()
 
@@ -149,6 +154,7 @@ def login():
     form = LoginForm(formadata=incoming_request,
                         meta={'csrf': False})
 
+   
     if form.validate_on_submit():
         user = User.authenticate(form.email.data,
                                  form.password.data)
@@ -174,20 +180,37 @@ def logout():
 
 
 ###################      Swipes #######################
+
 @app.route('/person')
 def get_profile():
-    rand = random.randrange(1,len(User.query.all())+1 ) 
-    profile  = User.query.get(rand)
-    serialized = profile.serialize()
-    return jsonify(profile=serialized)
+
+    email = os.getenv("EMAIL")
+    email_password =  os.getenv("EMAIL_PASSWORD")
+    zip_api_key =  os.getenv("ZIP_API_KEY")
+
+    # r = requests.get(f"https://service.zipapi.us/zipcode/radius/90210?X-API-KEY={zip_api_key}&radius=10",
+    # auth=HTTPBasicAuth(email, email_password))
+
+    print(zip_api_key,email,email_password)
+
+    # rand = random.randrange(1,len(User.query.all())+1 ) 
+    # profile  = User.query.get(rand)
+    # serialized = profile.serialize()
+    return jsonify(zip="zip")
 
 @app.route('/likes', methods=["POST"])
 def likes():
     
     likes_id = int(request.json["id"])
     liked_user = User.query.get_or_404(likes_id)
-    g.user.likes.append(liked_user)
-
+    if liked_user:
+        g.user.likes.append(liked_user)
+    
+    liked_user_likes = liked_user.likes
+    for liked_user_like in liked_user_likes:
+        if liked_user_like.id == g.user.id:
+            Match.match(g.user.id, likes_id)
+  
     db.session.commit()
 
     return jsonify(success="likes")
@@ -200,21 +223,29 @@ def rejects():
 
     db.session.commit()
 
-    return jsonify(success="likes")
+    return jsonify(success="rejects")
 
 
 @app.route('/matches')
 def match():
     
-    likes = User.query.get(session[CURR_USER_KEY]).likes
-    matches = []
-    for like in likes:
-        potential_matches = User.query.get(like.id)
-        print(potential_matches)
-        for  potential_match in potential_matches.likes:
-            if potential_match.id == session[CURR_USER_KEY]:
-                matches.append(like.serialize()) 
+    # matches = User.query.get(session[CURR_USER_KEY]).matches
+    first_match = Match.query.with_entities(Match.second_id).filter( Match.first_id== g.user.id ).all()
+    second_match = Match.query.with_entities(Match.first_id).filter( Match.second_id==g.user.id ).all()
+    matches_id = []
+    #this was returned as a tuple
+    for match in first_match:
+        matches_id.append(match[0])
+    for match in second_match:
+        matches_id.append(match[0])
+    
+    matches_unserialized = [ User.query.get(id) for id in matches_id ]
+    matches = [ user.serialize() for user in matches_unserialized]
 
-    print(matches)
+    # for like in likes:
+    #     potential_matches = User.query.get(like.id)
+    #     for  potential_match in potential_matches.likes:
+    #         if potential_match.id == session[CURR_USER_KEY]:
+    #             matches.append(like.serialize()) 
     
     return jsonify(matches=matches)

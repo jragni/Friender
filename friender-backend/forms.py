@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Email, Length
 
 class UserRegisterForm(FlaskForm):
@@ -7,9 +7,11 @@ class UserRegisterForm(FlaskForm):
 
     first_name = StringField('First name', validators=[DataRequired()])
     last_name = StringField('Last name', validators=[DataRequired()])
-    description = StringField('Bio')
+    description = TextAreaField('Bio')
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[Length(min=6)])
+    zipcode = StringField('Zipcode', validators=[DataRequired()])
+    friend_radius = IntegerField('Friend Radius',  validators=[DataRequired()] )
 
 class LoginForm(FlaskForm):
     """Login Form"""

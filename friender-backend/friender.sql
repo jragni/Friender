@@ -16,7 +16,9 @@ CREATE TABLE users (
     last_name TEXT NOT NULL,
     description TEXT,
     email TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    zipcode TEXT NOT NULL,
+    friend_radius INTEGER NOT NULL
   );
 
 CREATE TABLE likes (
@@ -28,6 +30,12 @@ CREATE TABLE likes (
 CREATE TABLE rejections (
     from_id INTEGER NOT NULL,
     rejections_id INTEGER NOT NULL
+  );
+
+CREATE TABLE matches (
+    id SERIAL,
+    first_id INTEGER NOT NULL,
+    second_id INTEGER NOT NULL
   );
 
 

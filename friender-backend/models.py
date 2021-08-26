@@ -44,6 +44,36 @@ class Like(db.Model):
         primary_key=True,
     )
 
+class Match(db.Model):
+
+    __tablename__ = 'matches'
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    first_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+    )
+
+    second_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id'),
+    )
+
+    @classmethod
+    def match(cls, first_id, second_id):
+
+        match = Match(
+            first_id=first_id,
+            second_id=second_id
+        )
+
+        db.session.add(match)
+        return match
+
 class Rejection(db.Model):
     """User in the system."""
 
@@ -96,6 +126,16 @@ class User(db.Model):
         db.Text,
     )
 
+    zipcode = db.Column(
+        db.Text,
+        nullable=False
+    )
+
+    friend_radius= db.Column(
+        db.Integer,
+        nullable=False
+    )
+
     likes = db.relationship(
         "User",
         secondary="likes",
@@ -109,6 +149,13 @@ class User(db.Model):
         primaryjoin=( Rejection.from_id == id),
         secondaryjoin=( Rejection.rejections_id == id)
     )
+
+    # matches = db.relationship(
+    #     "User",
+    #     secondary="matches",
+    #     primaryjoin=( (Match.first_id == id) or (Match.second_id == id)   ),
+    #     secondaryjoin=((Match.second_id == id and Match.first_id != id)  or (Match.first_id == id and Match.second_id != id) )
+    # )
 
     # def is_liked_by(self, likes_id):
     #     """Is this user followed by `other_user`?"""
@@ -166,7 +213,7 @@ class User(db.Model):
         }
         
     @classmethod
-    def signup(cls, first_name, last_name, email, password):
+    def signup(cls, first_name, last_name, email, password, zipcode, friend_radius):
         """Sign up user.
 
         Hashes password and adds user to system.
@@ -179,6 +226,8 @@ class User(db.Model):
             last_name=last_name,
             email=email,
             password=hashed_pwd,
+            zipcode=zipcode,
+            friend_radius=friend_radius
         )
 
         db.session.add(user)
