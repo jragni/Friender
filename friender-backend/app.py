@@ -204,7 +204,7 @@ def rejects():
 
 
 @app.route('/matches')
-def messages():
+def match():
     
     likes = User.query.get(session[CURR_USER_KEY]).likes
     matches = []
