@@ -93,9 +93,6 @@ def do_login(user):
 
     session[CURR_USER_KEY] = user.id
     
-
-
-
 def do_logout():
     """Logout user."""
 
@@ -149,6 +146,15 @@ def signup():
 
 # Should not need a get route as REACT would build form and send
 # data in JSON∂
+"""{
+  "user": {
+    "description": null,
+    "email": "simon@gmail.com",
+    "first_name": "simon",
+    "id": 2,
+    "last_name": "simon"
+  }
+}"""
 @app.route('/login', methods=["POST"])
 def login():
     """Handle user login."""
@@ -165,7 +171,7 @@ def login():
         if user:
             do_login(user)
             
-            return jsonify(success="success")
+            return jsonify(user=user.serialize())
     # Return error later
     return jsonify(failed="failed")
 
@@ -183,7 +189,18 @@ def logout():
 
 
 ###################      Swipes #######################
-
+"""
+  returns  a profile
+  {
+  "profile": {
+    "description": null,
+    "email": "ray@gmail.com",
+    "first_name": "ray",
+    "id": 3,
+    "last_name": "ray"
+  }
+}
+"""
 @app.route('/person')
 def get_profile():
 
@@ -233,7 +250,24 @@ def rejects():
 
     return jsonify(success="rejects")
 
-
+"""{
+  "matches": [
+    {
+      "description": null,
+      "email": "ke@gmail.com",
+      "first_name": "buk",
+      "id": 4,
+      "last_name": "ka"
+    },
+    {
+      "description": null,
+      "email": "ray@gmail.com",
+      "first_name": "ray",
+      "id": 3,
+      "last_name": "ray"
+    }
+  ]
+}"""
 @app.route('/matches')
 def match():
     
