@@ -186,7 +186,6 @@ def likes():
     
     likes_id = int(request.json["id"])
     liked_user = User.query.get_or_404(likes_id)
-    g.user = User.query.get(session[CURR_USER_KEY])
     g.user.likes.append(liked_user)
 
     db.session.commit()
@@ -197,7 +196,6 @@ def likes():
 def rejects():
     rejects_id = int(request.json["id"])
     rejected_user = User.query.get_or_404(rejects_id)
-    g.user = User.query.get(session[CURR_USER_KEY])
     g.user.likes.append(rejected_user)
 
     db.session.commit()
@@ -205,4 +203,18 @@ def rejects():
     return jsonify(success="likes")
 
 
-@app.route('/messages')
+@app.route('/matches')
+def messages():
+    
+    likes = User.query.get(session[CURR_USER_KEY]).likes
+    matches = []
+    for like in likes:
+        potential_matches = User.query.get(like.id)
+        print(potential_matches)
+        for  potential_match in potential_matches.likes:
+            if potential_match.id == session[CURR_USER_KEY]:
+                matches.append(like.serialize()) 
+
+    print(matches)
+    
+    return jsonify(matches=matches)

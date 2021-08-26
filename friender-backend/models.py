@@ -110,11 +110,14 @@ class User(db.Model):
         secondaryjoin=( Rejection.rejections_id == id)
     )
 
-    def is_liked_by(self, likes_id):
-        """Is this user followed by `other_user`?"""
+    # def is_liked_by(self, likes_id):
+    #     """Is this user followed by `other_user`?"""
+    #     print( self.likes, "models")
 
-        found_user_list = [user for user in self.likes if user == likes_id]
-        return len(found_user_list) == 1
+    #     for like in self.likes:
+          
+    #     # liked_back = [user for user in self.likes if  == likes_id]
+    #     return True
 
 
     # REVISIT ONCE AWS IS COMPLETE
@@ -240,7 +243,6 @@ class Message(db.Model):
     )
 
 
-    user = db.relationship('User')
 
 
 # def connect_db(app):
