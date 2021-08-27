@@ -42,7 +42,7 @@ CREATE TABLE matches (
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
     text TEXT NOT NULL,
-    user_id INTEGER NOT NULL,
-    to_user_id INTEGER NOT NULL
+    sender_id INTEGER NOT NULL,
+    receiver_id INTEGER NOT NULL
   );
 

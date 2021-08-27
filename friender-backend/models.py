@@ -274,23 +274,50 @@ class Message(db.Model):
         nullable=False,
     )
 
+
+    sender_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+    )
+
+    receiver_id = db.Column(
+        db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+    )
+
     timestamp = db.Column(
         db.DateTime,
         nullable=False,
         default=datetime.utcnow(),
     )
 
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey('users.id', ondelete='CASCADE'),
-        nullable=False,
-    )
+    def serialize(self):
+        """Serialize to dictionary."""
 
-    to_user_id = db.Column(
-        db.Integer,
-        db.ForeignKey('users.id', ondelete='CASCADE'),
-        nullable=False,
-    )
+        return {
+            "id": self.id,
+            "text": self.text,
+            "sender_id":self.sender_id,
+            "receiver_id":self.receiver_id,
+            "timestamp": self.timestamp
+        }
+        
+    @classmethod
+    def sent(cls, text, sender_id, receiver_id):
+        """Sign up user.
+
+        Hashes password and adds user to system.
+        """
+        message = Message(
+           text=text,
+           sender_id=sender_id,
+           receiver_id=receiver_id
+        )
+
+        db.session.add(message)
+        return message
 
 
 

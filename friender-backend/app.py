@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 # from flask_jwt import JWT, jwt_required, current_identity #used for flask token
 import jwt
 from forms import  UserRegisterForm, LoginForm
-from models import Like, db, connect_db, User, Match
+from models import Like, db, connect_db, User, Match , Message
 import random
 import requests
 from requests.auth import HTTPBasicAuth
@@ -314,6 +314,34 @@ def match():
     
     return jsonify(matches=matches)
 
+@app.route('/messages')
+def messages():
+    receiver = int(request.json["id"])
+    history = Message.query.filter(
+        ( Message.sender_id == g.user.id and Message.receiver_id==receiver ) or
+        ( Message.sender_id == receiver and Message.receiver_id==g.user.id ) 
+    ).all()
+
+    history_unserialized = [ Message.query.get(message.id) for message in history]
+    messages = [ message.serialize() for message in history_unserialized]
+    return jsonify(messages=messages)
+    
+
+@app.route('/send')
+def send():
+    incoming_request = request.json
+    sent_to = incoming_request.id
+    incoming_message = incoming_request.message
+
+    message = Message.sent( 
+        incoming_message, 
+        g.user.id , 
+        sent_to)
+
+    db.session.commit()
+
+    return jsonify(message=message.serialize())
+    
 
 @app.route('/upload')
 def upload():
