@@ -63,7 +63,12 @@ class FrienderApi {
 
     console.log("striginfied data:", data);
     const res = await this.request("/login", data, "post");
+
     console.log("api, login: ", res);
+    if (res.failed === "failed") {
+      return null;
+    }
+    // if user is defined ----
     const user = {
       firstName: res.user.first_name,
       lastName: res.user.last_name,

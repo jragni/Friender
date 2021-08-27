@@ -11,9 +11,12 @@ import "./LoginForm.css";
  *  - login  --- function to log user
  *
  * States:
- * - currentUser  --- user info
  *     {firstName, lastName, email, description, bio}
  outes -> LoginForm
+ */
+
+/** NOTE:
+ * HOW TO HANDLE improper redirects
  */
 function LoginForm({ login }) {
   let history = useHistory();
@@ -36,7 +39,7 @@ function LoginForm({ login }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     login(loginInfo);
-    history.push("/");
+    history.push("/login");
   }
   // TODO: validate if this works
 

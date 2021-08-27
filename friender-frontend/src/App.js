@@ -2,7 +2,7 @@ import "bootswatch/dist/quartz/bootstrap.min.css";
 import "./App.css";
 import Nav from "./nav-routes/Nav";
 import Routes from "./nav-routes/Routes";
-import React, { useEffect, useState } from "react";
+import React, { useHistory, useEffect, useState } from "react";
 import FrienderApi from "./api/FrienderApi";
 import UserContext from "./UserContext";
 import axios from "axios";
@@ -29,8 +29,12 @@ function App() {
     console.log("Logging in App.js....");
     const res = await FrienderApi.login(loginData);
     console.log("Response of login: ", res);
-    FrienderApi.setCurrentUser = res;
-    setCurrentUser(res);
+    if (res !== null) {
+      FrienderApi.setCurrentUser = res;
+      setCurrentUser(res);
+    } else {
+      setCurrentUser(null);
+    }
   }
 
   function unmatch() {}
