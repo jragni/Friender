@@ -32,10 +32,18 @@ function App() {
     if (res !== null) {
       FrienderApi.setCurrentUser = res;
       setCurrentUser(res);
+      localStorage.setItem("currentUser", JSON.stringify(res));
     } else {
       setCurrentUser(null);
     }
   }
+
+  useEffect(function geCurrentUserLocalStorage() {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (currentUser !== "null") {
+      setCurrentUser(currentUser);
+    }
+  }, []);
 
   function unmatch() {}
 
@@ -56,11 +64,13 @@ function App() {
     console.log("res for signup in APP.js:", res);
     FrienderApi.currentUser = res;
     setCurrentUser(res);
+    localStorage.setItem("currentUser", JSON.stringify(res));
   }
   // END DEV TESTING =================
 
   function logout() {
     setCurrentUser(null);
+    localStorage.setItem("currentUser", null);
   }
 
   function getMatches() {}
