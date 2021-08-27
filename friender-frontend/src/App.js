@@ -30,6 +30,7 @@ function App() {
     const res = await FrienderApi.login(loginData);
     console.log("Response of login: ", res);
     FrienderApi.setCurrentUser = res;
+    setCurrentUser(res);
   }
 
   function unmatch() {}

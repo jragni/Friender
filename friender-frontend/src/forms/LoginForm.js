@@ -33,10 +33,9 @@ function LoginForm({ login }) {
       [name]: value,
     }));
   }
-  // Sends search back to parent component
   function handleSubmit(evt) {
     evt.preventDefault();
-    //login(loginInfo);
+    login(loginInfo);
     history.push("/");
   }
   // TODO: validate if this works
