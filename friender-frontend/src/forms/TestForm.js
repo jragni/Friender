@@ -7,7 +7,7 @@ import UserContext from "../UserContext";
 
 function TestForm() {
   let history = useHistory();
-  const { login } = useContext(UserContext);
+  const currentUser = useContext(UserContext);
   const [loginInfo, setLoginInfo] = useState({
     image: "",
   });
@@ -30,8 +30,7 @@ function TestForm() {
       <form className="TestForm" onSubmit={handleSubmit}>
         <div className="form-group">
           <input
-            style={{ width: "400px" }}
-            id="email"
+            id="image"
             name="image"
             className="form-control"
             placeholder="image"
