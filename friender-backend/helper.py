@@ -22,7 +22,7 @@ def upload_file(file, object_name=None):
         object_name = os.path.basename(file)
 
     try:
-        s3.put_object(file, bucket_name ,object_name, ExtraArgs={ "ContentType": "image/jpeg"})
+        s3.upload_file(file, bucket_name ,object_name, ExtraArgs={ "ContentType": "image/jpeg"})
 
     except Exception as e:
         print("Something Happened: ", e)

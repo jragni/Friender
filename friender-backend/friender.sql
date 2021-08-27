@@ -43,6 +43,7 @@ CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
     text TEXT NOT NULL,
     sender_id INTEGER NOT NULL,
-    receiver_id INTEGER NOT NULL
+    receiver_id INTEGER NOT NULL,
+    timestamp TIMESTAMP NOT NULL
   );
 
