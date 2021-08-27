@@ -8,34 +8,36 @@ import UserContext from "../UserContext";
 function TestForm() {
   let history = useHistory();
   const currentUser = useContext(UserContext);
-  const [loginInfo, setLoginInfo] = useState({
+  const [info, setLoginInfo] = useState({
     image: "",
   });
 
   function handleChange(evt) {
     const { name, value } = evt.target;
-    setLoginInfo((loginInfo) => ({
-      ...loginInfo,
+    setLoginInfo((info) => ({
+      ...info,
       [name]: value,
     }));
   }
   // Sends search back to parent component
   function handleSubmit(evt) {
     evt.preventDefault();
-    //login(loginInfo);
+    console.log(info)
   }
 
+  console.log( info)
   return (
     <div className="TestForm" style={{ padding: "8px" }}>
       <form className="TestForm" onSubmit={handleSubmit}>
         <div className="form-group">
-          <input
+          <input  
             id="image"
             name="image"
             className="form-control"
+            type="file"
             placeholder="image"
             onChange={handleChange}
-            value={loginInfo.image}
+            value={info.image}
           />
         </div>
         <button className="btn btn-primary"> button </button>
