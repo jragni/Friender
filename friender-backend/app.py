@@ -371,22 +371,22 @@ def match():
 def messages():
     receiver = int(request.json["id"])
 
-    is_match = Match.query.filter(or_( 
-        and_(Match.first_id == g.user.id , Match.second_id ==receiver ),
-        and_(Match.second_id == g.user.id , Match.first_id ==receiver )
-     )).first()
+    is_match = Match.query.filter(or_(
+        and_(Match.first_id == g.user.id, Match.second_id == receiver),
+        and_(Match.second_id == g.user.id, Match.first_id == receiver)
+    )).first()
 
     if is_match is None:
         return jsonify(error="Dont be a creep")
 
     history = Message.query.filter(or_(
-        and_(Message.sender_id == g.user.id , Message.receiver_id == receiver),
-        and_(Message.sender_id == receiver , Message.receiver_id == g.user.id))).all()
+        and_(Message.sender_id == g.user.id, Message.receiver_id == receiver),
+        and_(Message.sender_id == receiver, Message.receiver_id == g.user.id))).all()
 
     history_unserialized = [Message.query.get(
         message.id) for message in history]
     messages = [message.serialize() for message in history_unserialized]
-    
+
     return jsonify(messages=messages)
 
 
