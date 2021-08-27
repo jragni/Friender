@@ -26,7 +26,18 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoaded, setIsLoaded] = useState(true); // SET TO false for DEV
 
-  function login() {}
+  async function login(loginData) {
+    // login through back end
+    // get user info
+    // set user info
+    console.log("Logging in App.js....");
+    const res = await FrienderApi.login(loginData);
+    console.log("Response of login: ", res);
+
+    //TODO: update this
+    setCurrentUser(_testuser);
+    setIsLoaded(true);
+  }
 
   function unmatch() {}
 
