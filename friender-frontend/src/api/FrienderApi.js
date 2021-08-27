@@ -12,7 +12,8 @@ class FrienderApi {
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
     const url = `${BASE_URL}/${endpoint}`;
-    const headers = { "Content-Type": "application/json" };
+    // const headers = { Authorization: `Bearer ${JoblyApi.token}` };
+    const headers = {};
     const params = method === "get" ? data : {};
 
     try {
@@ -37,7 +38,6 @@ class FrienderApi {
     };
     data = JSON.stringify(data);
     const res = await this.request("/signup", data, "post");
-    return res;
   }
 
   // Individual API routes

@@ -28,17 +28,20 @@ function SignUpForm({ signup }) {
     radius: "",
     zip: "",
   });
-
+  //FOR DEV
+  console.log(signUpInfo);
   function handleChange(evt) {
     const { name, value } = evt.target;
-    setSignUpInfo((SignUpData) => ({
-      ...SignUpData,
+    setSignUpInfo((signUpInfo) => ({
+      ...signUpInfo,
       [name]: value,
     }));
   }
   // Sends search back to parent component
   function handleSubmit(evt) {
     evt.preventDefault();
+    console.log("SubmitForm: ---Submiting sign up");
+    signup(signUpInfo);
     //signup(signUpInfo); // TODO: will add this later
     // if(currentUser) history.push("/companies")
     history.push("/");
