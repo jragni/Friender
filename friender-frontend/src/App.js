@@ -4,8 +4,9 @@ import Nav from "./nav-routes/Nav";
 import Routes from "./nav-routes/Routes";
 import { useHistory } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import Api from "./api/api";
+import FrienderApi from "./api/FrienderApi";
 import UserContext from "./UserContext";
+import axios from "axios";
 
 /** Friender
  * An app that allows the user to meet adults in their area
@@ -22,16 +23,50 @@ function App() {
 
   // TODO: have user persist throughout screen refresh and same browser
 
-  const [currentUser, setCurrentUser] = useState(_testuser);
+  const [currentUser, setCurrentUser] = useState(null);
   const [isLoaded, setIsLoaded] = useState(true); // SET TO false for DEV
 
-  function login() {}
+  async function login(loginData) {
+    // login through back end
+    // get user info
+    // set user info
+    console.log("Logging in App.js....");
+    const res = await FrienderApi.login(loginData);
+    console.log("Response of login: ", res);
+
+    //TODO: update this
+    setCurrentUser(_testuser);
+    setIsLoaded(true);
+  }
 
   function unmatch() {}
 
-  function updateProfile() {}
+  //DEV TESTING ------------------
+  //
+  async function updateProfile(userInfo) {
+    console.log("updating profile");
+    // TODO: add this to the API instead
+    const response = await axios.post("http://localhost:5000/upload", {
+      data: userInfo,
+    });
+    console.log("response", response);
+  }
 
-  function signup() {}
+  async function signup(signupData) {
+    console.log("signup----------------signing user up");
+    const res = await FrienderApi.signup(signupData);
+
+    //FIGURE OUT A BETTER WAY TO DO THIS
+    setCurrentUser({
+      firstName: signupData.firstName,
+      lastName: signupData.lastName,
+      email: signupData.email,
+      zip: signupData.zip,
+      radius: signupData.radius,
+    });
+    console.log("should be logged in", currentUser);
+  }
+  // END DEV TESTING =================
 
   function logout() {
     setCurrentUser(null);
