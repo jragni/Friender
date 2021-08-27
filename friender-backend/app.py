@@ -432,7 +432,7 @@ def send():
     return jsonify(message=message.serialize())
 
 
-@app.route('/upload')
+@app.route('/upload', method=["POST"])
 def upload():
     incoming_request = request.data
     print(incoming_request)
