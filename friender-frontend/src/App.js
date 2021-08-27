@@ -2,7 +2,6 @@ import "bootswatch/dist/quartz/bootstrap.min.css";
 import "./App.css";
 import Nav from "./nav-routes/Nav";
 import Routes from "./nav-routes/Routes";
-import { useHistory } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import FrienderApi from "./api/FrienderApi";
 import UserContext from "./UserContext";
@@ -27,16 +26,10 @@ function App() {
   const [isLoaded, setIsLoaded] = useState(true); // SET TO false for DEV
 
   async function login(loginData) {
-    // login through back end
-    // get user info
-    // set user info
     console.log("Logging in App.js....");
     const res = await FrienderApi.login(loginData);
     console.log("Response of login: ", res);
-
-    //TODO: update this
-    setCurrentUser(_testuser);
-    setIsLoaded(true);
+    FrienderApi.setCurrentUser = res;
   }
 
   function unmatch() {}
@@ -55,16 +48,9 @@ function App() {
   async function signup(signupData) {
     console.log("signup----------------signing user up");
     const res = await FrienderApi.signup(signupData);
-
-    //FIGURE OUT A BETTER WAY TO DO THIS
-    setCurrentUser({
-      firstName: signupData.firstName,
-      lastName: signupData.lastName,
-      email: signupData.email,
-      zip: signupData.zip,
-      radius: signupData.radius,
-    });
-    console.log("should be logged in", currentUser);
+    console.log("res for signup in APP.js:", res);
+    FrienderApi.currentUser = res;
+    setCurrentUser(res);
   }
   // END DEV TESTING =================
 

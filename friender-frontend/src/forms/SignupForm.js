@@ -29,7 +29,6 @@ function SignUpForm({ signup }) {
     zip: "",
   });
   //FOR DEV
-  console.log(signUpInfo);
   function handleChange(evt) {
     const { name, value } = evt.target;
     setSignUpInfo((signUpInfo) => ({

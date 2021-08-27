@@ -9,11 +9,12 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
  */
 
 class FrienderApi {
+  currentUser = null;
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
     const url = `${BASE_URL}/${endpoint}`;
     // const headers = { Authorization: `Bearer ${JoblyApi.token}` };
-    const headers = {};
+    const headers = { "Content-Type": "application/json" };
     const params = method === "get" ? data : {};
 
     try {
@@ -27,27 +28,58 @@ class FrienderApi {
   }
 
   static async signup(signupData) {
-    let { firstName, lastName, email, password, zip, radius } = signupData;
+    // Convert form data to snake case key's for the backend
     let data = {
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      password,
-      zipcode: zip,
-      friend_radius: radius,
+      first_name: signupData.firstName,
+      last_name: signupData.lastName,
+      email: signupData.email,
+      password: signupData.password,
+      zipcode: signupData.zip,
+      friend_radius: signupData.radius,
     };
+
+    console.log("pre-stringified data: ", data);
     data = JSON.stringify(data);
+
     const res = await this.request("/signup", data, "post");
-    console.log("signedup: response: ", res);
+    console.log("API: signedup: response: ", res);
+    // TODO: will refactor
+    const user = {
+      firstName: res.user.first_name,
+      lastName: res.user.last_name,
+      email: res.user.email,
+      description: res.user.description,
+      radius: res.user.friend_radius,
+      zip: res.user.zipcode,
+    };
+
+    console.log("signedup user:", user);
+    return user;
   }
 
-  static async login({ email, password }) {
-    console.log("logging in through API,", email, password);
-    let data = { email, password };
+  static async login(data) {
+    console.log("logging in through API,", data.email, data.password);
     data = JSON.stringify(data);
 
-    const res = await this.request("/signup", data, "post");
+    const res = await this.request("/login", data, "post");
     console.log("api, login: ", res);
+    const {
+      first_name,
+      last_name,
+      email,
+      description,
+      friend_radius,
+      zipcode,
+    } = res;
+    const user = {
+      firstName: first_name,
+      lastName: last_name,
+      email,
+      description,
+      radius: friend_radius,
+      zip: zipcode,
+    };
+    return user;
   }
 
   // Individual API routes

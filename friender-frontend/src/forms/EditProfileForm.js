@@ -19,7 +19,6 @@ function EditProfileForm({ update }) {
 
   const history = useHistory();
   const currentUser = useContext(UserContext);
-  console.log(currentUser);
   let { firstName, lastName, email, description, zip, radius } = currentUser;
   description = description || "";
   if (!currentUser) history.push("/");
@@ -38,7 +37,6 @@ function EditProfileForm({ update }) {
 
   function handleChange(evt) {
     const { name, value } = evt.target;
-    console.log(userInfo);
     setUserInfo((userInfo) => ({
       ...userInfo,
       [name]: value,
