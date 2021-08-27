@@ -61,24 +61,18 @@ class FrienderApi {
     console.log("logging in through API,", data.email, data.password);
     data = JSON.stringify(data);
 
+    console.log("striginfied data:", data);
     const res = await this.request("/login", data, "post");
     console.log("api, login: ", res);
-    const {
-      first_name,
-      last_name,
-      email,
-      description,
-      friend_radius,
-      zipcode,
-    } = res;
     const user = {
-      firstName: first_name,
-      lastName: last_name,
-      email,
-      description,
-      radius: friend_radius,
-      zip: zipcode,
+      firstName: res.user.first_name,
+      lastName: res.user.last_name,
+      email: res.user.email,
+      description: res.user.description,
+      radius: res.user.friend_radius,
+      zip: res.user.zipcode,
     };
+    console.log("returning user:", user);
     return user;
   }
 
