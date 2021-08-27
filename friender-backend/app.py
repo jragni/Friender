@@ -13,6 +13,7 @@ from requests.auth import HTTPBasicAuth
 from dotenv import load_dotenv
 import helper
 load_dotenv()
+
 email = os.getenv("EMAIL")
 email_password =  os.environ.get("EMAIL_PASSWORD")
 zip_api_key =  os.environ.get("ZIP_API_KEY")
@@ -147,15 +148,15 @@ def signup():
             )
             db.session.commit()
 
+            do_login(user)
+            
+            return jsonify(user=user.serialize())
+
+
         except IntegrityError as e:
             return jsonify(failed="failed")
 
-        do_login(user)
-    
-
-        # shouldnt need to redirect as REACT Will handle it
-        #perhaps send JSON for success
-        return jsonify(success="success")
+ 
     # Return error later
     return jsonify(failed="failed")
 

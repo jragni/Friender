@@ -209,7 +209,8 @@ class User(db.Model):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "email":self.email,
-            "description":self.description
+            "description":self.description,
+            "friend_radius":self.friend_radius
         }
         
     @classmethod
