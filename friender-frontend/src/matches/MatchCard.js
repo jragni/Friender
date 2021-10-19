@@ -1,45 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./MatchCard.css";
-import defaulImg from "./blank-profile-picture-973460_1280.png";
-
-/**MatchCard
- * Component that renders the current user's match's details.
+/** MatchCard
+ * Card for showing the user's Matches
  *
  * Props:
- *  - FirstName
- *  - LastName
- *  - Description
  *
  * State:
- *  None
  *
- * MatchList -> MatchCard
+ * { Matches, MatchCarousel } -> MatchCard
  */
-function MatchCard({ unmatch, match }) {
-  console.log("MatchCard rendering...");
-  const { firstName, lastName, description, id, image_url } = match;
-  const fullName = `${firstName} ${lastName}`;
-  // TODO: BUILD OUT UNMATCH features on API
+export default function MatchCard(props) {
+  //FORDEV
+  let firstName = props.firstName || "TEST DEV";
+  let username = props.username || "TEST USER";
+  //END DEV
+
   return (
     <div className="MatchCard card">
-      <img
-        className="card-img-top"
-        src={image_url ? image_url : defaulImg}
-        alt={fullName}
-      />
-      <div className="card-body">
-        <h5 className="card-title">{firstName}</h5>
-        <p className="card-text">{description}</p>
-        <Link href="/" className="btn btn-primary btn-sm card-btn">
-          Chat
-        </Link>
-        <button onClick={unmatch} className="btn btn-danger btn-sm card-btn">
-          Unmatch
-        </button>
-      </div>
+
+      {/* TODO: Replace firstName with props once created */}
+      <Link to={`matches/messages/${username}`}>
+        {/* ADD image */}
+        <img src="" alt="" />
+        {/* TODO: Add user first name display */}
+        <h3>{firstName}</h3>
+
+        {/* TODO: Add user User name */}
+        {/* TODO: Add user hobbies */}
+      </Link>
+
     </div>
   );
 }
-
-export default MatchCard;
