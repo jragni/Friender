@@ -1,4 +1,3 @@
-"""Models for Friender."""
 from flask import Flask, g, request, jsonify
 from models import db, connect_db, User
 from flask_debugtoolbar import DebugToolbarExtension
