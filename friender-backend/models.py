@@ -1,35 +1,26 @@
 """Models for Friender."""
-from flask_bcrypt import Bcrypt  
+from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
+
 def connect_db(app):
     """Connect SQLAlchemy to application."""
     db.app = app
     db.init_app(app)
 
-class Match(db.Model):
-    """Mapping for user matching with other users.
 
-    When users like each one another, they are matched and can now message each other.
-    """
+"""Mapping for users that like other users"""
+Match = db.Table('Match',
+                 db.Column('user_liking_id', db.Integer,
+                           db.ForeignKey('users.id')),
+                 db.Column('user_liked_id', db.Integer,
+                           db.ForeignKey('users.id'))
+                 )
 
-    __tablename__ = "matches"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
-    # The user_liking -> user_liked
-    user_liking_id = db.Column(db.Integer,
-                       db.ForeignKey("users.id"),
-                       primary_key=True)
-
-    user_liked_id = db.Column(db.Integer, 
-                       db.ForeignKey("users.id"),
-                       primary_key=True)
-    
 
 class Message(db.Model):
     """Message from one user to another."""
@@ -40,7 +31,7 @@ class Message(db.Model):
 
     message = db.Column(db.String, nullable=False)
 
-    from_user_id= db.Column(db.Integer,
+    from_user_id = db.Column(db.Integer,
                              db.ForeignKey("users.id"),
                              primary_key=True)
 
@@ -48,7 +39,9 @@ class Message(db.Model):
                            db.ForeignKey("users.id"),
                            primary_key=True)
 
-    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
+    timestamp = db.Column(db.DateTime, nullable=False,
+                          default=datetime.datetime.now())
+
 
 class User(db.Model):
     """User Model."""
@@ -63,52 +56,58 @@ class User(db.Model):
 
     email = db.Column(db.String(50), unique=True, nullable=False)
 
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(), nullable=False)
 
     # TODO: Add user image to database via correct path, for now will use url
     img_url = db.Column(db.String(50), nullable=False)
-    # TODO: Add message
 
     # Users who like this user
-    likers = db.relationship('User',
-                                       secondary='Match',
-                                       primaryjoin=(Match.user_liked_id==id),
-                                       secondaryjoin=(Match.user_liking_id==id))
+    likers = db.relationship(
+        'User',
+        secondary='Match',
+        primaryjoin=(Match.c.user_liked_id == id),
+        secondaryjoin=(Match.c.user_liking_id == id)
+    )
 
-    likees = db.relationship('User',
-                                       secondary='Match',
-                                       primaryjoin=(Match.user_liked_id==id),
-                                       secondaryjoin=(Match.user_liking_id==id))
-
-    messages_from = db.relationship('User',
-                                       secondary='Message',
-                                       primaryjoin=(Message.from_user_id ==id),
-                                       secondaryjoin=(Message.to_user_id == id))
-
-    messages_to = db.relationship('User',
-                                       secondary='message',
-                                       primaryjoin=(Match.user_liked_id==id),
-                                       secondaryjoin=(Match.user_liking_id==id))
-            
+    # Users who this uses likes
+    liked_users = db.relationship(
+        'User',
+        secondary='Match',
+        primaryjoin=(Match.c.user_liking_id == id),
+        secondaryjoin=(Match.c.user_liked_id == id)
+    )
 
     def __repr__(self):
-        return f"<User first_name:{self.first_name}, last_name: {self.last_name}, email: {self.email}>"
-    
+        return f"<User first_name:{self.first_name}"\
+               f"last_name: {self.last_name}, email: {self.email}>"
+
     @classmethod
     def register(cls, first_name, last_name, email, password, img_url):
         """Register user to the application given form data.
 
         Hashes password and adds it to the database.
         """
-        hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
+        hashed_password = bcrypt.generate_password_hash(
+            password).decode("utf-8")
 
-        new_user = User(first_name=first_name, 
-                        last_name=last_name, 
-                        email=email, 
-                        password=hashed_password, 
+        new_user = User(first_name=first_name,
+                        last_name=last_name,
+                        email=email,
+                        password=hashed_password,
                         img_url=img_url)
 
         db.session.add(new_user)
 
         return new_user
+
+    def serialize(self):
+        """Serialize to dictionary."""
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "email": self.email,
+            "password": self.password,
+            "img_url": self.img_url,
+        }
 
