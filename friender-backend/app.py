@@ -16,22 +16,26 @@ db.create_all()
 # key for getting the current user
 CURR_USER_KEY = "curr_user"
 
-#### AUTH: Log in and registration 
+# AUTH: Log in and registration
+
 
 @app.before_request
 def add_user_to_g():
-    """If we are logged in, add current user to g"""
+    """If we are logged in, add current user to g."""
     if CURR_USER_KEY in session:
-        User.query.get(session[CURR_USER_KEY])
+        g.user = User.query.get(session[CURR_USER_KEY])
+
     else:
         g.user = None
 
+
 def do_login(user):
     """Log user in.
-    
+
     Assigns the user id to the session.
     """
     session[CURR_USER_KEY] = user.id
+
 
 @app.route('/api/auth/login', methods=['POST'])
 def login():
@@ -45,11 +49,11 @@ def login():
     valid_user = User.authenticate(email, password)
     if valid_user:
         do_login(valid_user)
-        g.user = valid_user
         serialized = valid_user.serialize()
         return jsonify(user=serialized)
-
     
+    return jsonify(msg="Invalid credentials. Please try again")
+
 
 @app.route('/api/auth/register', methods=['POST'])
 def register():
@@ -63,20 +67,52 @@ def register():
     password = request.json['password']
     img_url = request.json['img_url']
 
-    new_user = User.register(first_name=first_name, 
+    # If the email already exists, respond with a message.
+    if (User.query.filter_by(email=email).first()):
+        msg = "Email is already registered. Please use another email"
+        return jsonify(msg=msg)
+
+    new_user = User.register(first_name=first_name,
                              last_name=last_name,
-                             email=email, 
-                             password=password, 
-                             img_url=img_url) 
+                             email=email,
+                             password=password,
+                             img_url=img_url)
 
     db.session.commit()
-    g.user = new_user
+    do_login(new_user)
     serialized = new_user.serialize()
 
     # Return w/status code 201 --- return tuple (json, status)
     return (jsonify(user=serialized), 201)
 
-### END AUTH
+
+@app.route("/api/auth/logout", methods=["POST"])
+def logout():
+    """Log the current user out."""
+    if g.user:
+        print('g.user: ', g.user, "session: ", session[CURR_USER_KEY])
+        g.user = None
+        session.pop(CURR_USER_KEY, None)
+        msg = "You have been logged out!"
+        return jsonify(msg=msg)
+    
+    return jsonify(msg="You are not logged in!")
+# END AUTH
+
+
+# FOR DEV TESTING
+@app.route("/api/test", methods=["POST"])
+def api_tests():
+    """Docstrings the test."""
+    data = request.json["data"]
+    print('This is the data: ', data, '-----------------')
+    if g.user:
+        return jsonify(user=g.user.serialize())
+
+    return jsonify("TEST PASSED")
+
+# end DEV TESTING
+
 
 @app.route('/api/users/like/<int:id>', methods=['POST'])
 def like_user(id):
