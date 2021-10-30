@@ -3,9 +3,10 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 
+# TODO: add typing to models
+
 bcrypt = Bcrypt()
 db = SQLAlchemy()
-
 
 def connect_db(app):
     """Connect SQLAlchemy to application."""
@@ -41,7 +42,6 @@ class Message(db.Model):
 
     timestamp = db.Column(db.DateTime, nullable=False,
                           default=datetime.datetime.now())
-
 
 class User(db.Model):
     """User Model."""
@@ -109,9 +109,21 @@ class User(db.Model):
             return user
         else:
             return False
-        
+    
+    def like_user(self, liked_user_id):
+        """Have a user like another user.
 
+        The user_liking will be added to the liked_user's list of 
+        likers. The liked_user will be added to the likers's list of
+        liked_users.
+        """
+        liked_user = User.query.filter_by(id=liked_user_id)
+        liked_user.likers.append(self)
+        self.liked_users.append(liked_user)
+        return liked_user
 
+    # TODO: create a function that checks if the current user and the user 
+    #       in question are matched (they both like each other)
 
     def serialize(self):
         """Serialize to dictionary."""

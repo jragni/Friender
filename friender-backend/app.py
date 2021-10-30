@@ -54,7 +54,6 @@ def login():
     
     return jsonify(msg="Invalid credentials. Please try again")
 
-
 @app.route('/api/auth/register', methods=['POST'])
 def register():
     """Register user from form data.
@@ -96,9 +95,8 @@ def logout():
         msg = "You have been logged out!"
         return jsonify(msg=msg)
     
-    return jsonify(msg="You are not logged in!")
+    return jsonify(msg="You are not logged in!"), 403
 # END AUTH
-
 
 # FOR DEV TESTING
 @app.route("/api/test", methods=["POST"])
@@ -113,11 +111,25 @@ def api_tests():
 
 # end DEV TESTING
 
-
 @app.route('/api/users/like/<int:id>', methods=['POST'])
 def like_user(id):
-    """Like a user."""
-    pass
+    """Like a user.
+    
+    The current user will be able to like another user specified
+    by the id endpoint.
+    """
+    if not g.user:
+        return jsonify(msg='User must be logged in to like.'), 403
+    
+    # TODO: add a check for the like user try except here 
+    liked_user = g.user.like(id) or None
+    
+    # TODO: check if they both like each other, and return message
+    db.session.commit()
+    
+    return jsonify(msg=f"You just liked {liked_user.first_name}.")
+    
+    
 
 # TODO: Create a route for GET current user's matches
 # TODO: Create a route for POST matching user with selected user
