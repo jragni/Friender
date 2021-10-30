@@ -100,6 +100,19 @@ class User(db.Model):
 
         return new_user
 
+    @classmethod
+    def authenticate(cls, email, password):
+        """Authenticate user upon log in request."""
+        user = cls.query.filter_by(email=email).first()
+
+        if user and bcrypt.check_password_hash(user.password, password):
+            return user
+        else:
+            return False
+        
+
+
+
     def serialize(self):
         """Serialize to dictionary."""
         return {
@@ -110,4 +123,3 @@ class User(db.Model):
             "password": self.password,
             "img_url": self.img_url,
         }
-
