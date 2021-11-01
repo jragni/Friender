@@ -71,11 +71,14 @@ def register():
         msg = "Email is already registered. Please use another email"
         return jsonify(msg=msg)
 
-    new_user = User.register(first_name=first_name,
-                             last_name=last_name,
-                             email=email,
-                             password=password,
-                             img_url=img_url)
+    new_user = User.register(
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        password=password,
+        img_url=img_url,
+        is_admin=False
+    )
 
     db.session.commit()
     do_login(new_user)
@@ -98,6 +101,44 @@ def logout():
     return jsonify(msg="You are not logged in!"), 403
 # END AUTH
 
+#### Matches and Liking
+@app.route("/apie/users/matches")
+def get_matches():
+    """Get the current user's matches."""
+    if not g.user:
+        return jsonify(msg='User must be logged in to like.'), 403
+    
+
+@app.route('/api/users/like/<int:id>', methods=['POST'])
+def like_user(id):
+    """Like a user.
+    
+    The current user will be able to like another user specified
+    by the id endpoint.
+    """
+    if not g.user:
+        return jsonify(msg='User must be logged in to like.'), 403
+    
+    liked_user = g.user.like(id) or None
+    
+    if liked_user:
+        db.session.commit()
+        return jsonify(
+            msg=f"{g.user.first_name} just liked {liked_user['first_name']}.", 
+            liked_user=liked_user,
+        )
+    
+    return jsonify(msg=f"Unable to add user with id:{id}")
+
+#### End Matches and Liking
+    
+
+# TODO: Create a route for GET current user's matches
+# TODO: Create a route for POST matching user with selected user
+# TODO: Create a route Getting all messages between two users
+# TODO: create a route for Posting a Message from one user to another user
+# TODO: Create a route for editing the current user
+
 # FOR DEV TESTING
 @app.route("/api/test", methods=["POST"])
 def api_tests():
@@ -110,29 +151,3 @@ def api_tests():
     return jsonify("TEST PASSED")
 
 # end DEV TESTING
-
-@app.route('/api/users/like/<int:id>', methods=['POST'])
-def like_user(id):
-    """Like a user.
-    
-    The current user will be able to like another user specified
-    by the id endpoint.
-    """
-    if not g.user:
-        return jsonify(msg='User must be logged in to like.'), 403
-    
-    # TODO: add a check for the like user try except here 
-    liked_user = g.user.like(id) or None
-    
-    # TODO: check if they both like each other, and return message
-    db.session.commit()
-    
-    return jsonify(msg=f"You just liked {liked_user.first_name}.")
-    
-    
-
-# TODO: Create a route for GET current user's matches
-# TODO: Create a route for POST matching user with selected user
-# TODO: Create a route Getting all messages between two users
-# TODO: create a route for Posting a Message from one user to another user
-# TODO: Create a route for editing the current user
